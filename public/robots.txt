@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://www.auzbizgroup.com/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-Delay: 10
