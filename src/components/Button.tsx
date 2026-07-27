@@ -48,7 +48,7 @@ export default function Button({
   rel,
 }: ButtonProps) {
   const classes = [
-    "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed",
+    "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-300 active:scale-[0.97] hover:shadow-lg hover:shadow-black/10 disabled:opacity-50 disabled:cursor-not-allowed",
     variantClasses[variant],
     sizeClasses[size],
     className,

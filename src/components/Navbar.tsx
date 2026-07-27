@@ -39,13 +39,13 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
             ? isDark
-              ? "bg-[#0a0a1a]/95 backdrop-blur-xl shadow-2xl shadow-black/30 py-3 border-b border-white/5"
-              : "bg-navy-800/95 backdrop-blur-lg shadow-2xl shadow-navy-900/20 py-3"
+              ? "bg-[#0a0a1a]/95 backdrop-blur-2xl shadow-2xl shadow-black/30 py-3 border-b border-white/[0.06]"
+              : "bg-navy-800/95 backdrop-blur-2xl shadow-2xl shadow-navy-900/20 py-3"
             : isDark
-            ? "bg-[#0a0a1a]/80 backdrop-blur-md py-4"
+            ? "bg-[#0a0a1a]/80 backdrop-blur-xl py-4"
             : "bg-navy-800 py-4"
         }`}
       >
@@ -83,7 +83,7 @@ export default function Navbar() {
                   {link.label}
                   <motion.span
                     layout
-                    className={`absolute bottom-1 left-1/2 -translate-x-1/2 h-0.5 bg-gold-500 rounded-full transition-all duration-300 ${
+                    className={`absolute bottom-1 left-1/2 -translate-x-1/2 h-0.5 bg-gold-500 rounded-full transition-all duration-500 ${
                       isActive ? "w-8" : "w-0 group-hover:w-4"
                     }`}
                   />
@@ -127,10 +127,10 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className={`fixed top-[72px] left-0 right-0 z-40 backdrop-blur-lg border-t md:hidden overflow-hidden ${
+            className={`fixed top-[72px] left-0 right-0 z-40 backdrop-blur-2xl border-t md:hidden overflow-hidden ${
               isDark
-                ? "bg-[#0a0a1a]/98 border-white/5"
-                : "bg-navy-800/98 border-white/5"
+                ? "bg-[#0a0a1a]/98 border-white/[0.06]"
+                : "bg-navy-800/98 border-white/[0.06]"
             }`}
           >
             <div className="px-4 py-4 flex flex-col gap-1">
@@ -144,7 +144,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block py-3 px-4 text-white/80 hover:text-gold-500 hover:bg-white/5 rounded-lg transition-colors text-sm font-medium"
+                    className="block py-3.5 px-4 rounded-xl text-white/75 hover:text-gold-500 hover:bg-white/5 rounded-lg transition-colors text-sm font-medium"
                   >
                     {link.label}
                   </Link>

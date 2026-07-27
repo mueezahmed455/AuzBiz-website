@@ -33,7 +33,7 @@ export function SectionHeader({
         {eyebrow}
       </span>
       <h2
-        className={`text-2xl sm:text-3xl font-bold mb-3 leading-tight ${
+        className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 leading-tight tracking-tight ${
           light ? "text-white" : "text-navy-800 dark:text-white"
         }`}
       >

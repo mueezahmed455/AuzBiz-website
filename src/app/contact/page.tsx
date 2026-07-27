@@ -116,7 +116,7 @@ export default function ContactPage() {
             <span className="text-gold-500 text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
               Contact Us — We Respond Within 2 Hours on WhatsApp
             </span>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-3">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.05] tracking-tight mb-3">
               Get in Touch.
               <span className="block text-gold-500">We Reply Within 2 Hours.</span>
             </h1>

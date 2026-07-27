@@ -197,7 +197,7 @@ export default function ServicesPage() {
             <span className="text-gold-500 text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
               Our Services — 8 Specialisations Under One Roof
             </span>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-3">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.05] tracking-tight mb-3">
               8 Services.
               <span className="block text-gold-500">One Team. All Under One Roof.</span>
             </h1>

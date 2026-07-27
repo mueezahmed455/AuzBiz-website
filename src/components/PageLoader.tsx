@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function PageLoader() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => { if (typeof window !== 'undefined') { try { return !sessionStorage.getItem('auzbiz-loaded'); } catch { return true; } } return true; });
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function PageLoader() {
     }, 80);
 
     const timer = setTimeout(() => {
-      setLoading(false);
+      sessionStorage.setItem('auzbiz-loaded', '1'); setTimeout(function(){ setLoading(false); }, 100);
     }, 1800);
 
     return () => {

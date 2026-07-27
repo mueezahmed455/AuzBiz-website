@@ -26,9 +26,8 @@ export default function Footer() {
   const { isDark } = useTheme();
 
   return (
-    <footer
-      className={`transition-colors duration-400 ${
-        isDark ? "bg-[#0a0a1a] text-white border-t border-white/5" : "bg-navy-800 text-white"
+    <footer className={`transition-colors duration-400 ${
+        isDark ? "bg-[#0a0a1a] text-white border-t border-white/[0.06]" : "bg-navy-800 text-white"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,7 +43,7 @@ export default function Footer() {
                 Dream Beyond Borders™
               </span>
             </Link>
-            <p className="text-white/50 text-sm leading-relaxed max-w-xs">
+            <p className="text-white/55 text-sm leading-relaxed max-w-xs">
               Pakistan&apos;s premium travel, events, and business facilitation agency.
               Serving individuals, families, and leading organisations with end-to-end
               excellence.
@@ -91,8 +90,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-white/30 text-xs">
+        <div className="border-t border-white/[0.08] py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-white/35 text-xs">
             © {new Date().getFullYear()} AUZBIZ — Dream Beyond Borders. All rights
             reserved. | DHA II (Rehbar) Lahore-Pakistan.
           </p>

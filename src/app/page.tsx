@@ -250,7 +250,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-5 max-w-2xl"
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.05] tracking-tight mb-5 max-w-2xl"
             >
               <span className="gradient-text-animated">Dream Beyond Borders™</span>
               <motion.span
@@ -372,7 +372,7 @@ export default function HomePage() {
             {services.map((service) => (
               <StaggerItem key={service.title}>
                 <TiltCard tiltAmount={4} scale={1.015}>
-                  <div className="border rounded-xl p-5 hover:border-gold-500/30 hover:shadow-lg hover:shadow-gold-500/5 transition-all duration-300 group h-full" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
+                  <div className="border rounded-2xl p-6 hover:border-gold-500/30 card-premium group h-full" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
                   <div className="w-10 h-10 icon-box rounded-lg flex items-center justify-center mb-4 text-navy-800 group-hover:bg-navy-800 group-hover:text-gold-500 transition-colors duration-300">
                     <service.icon size={22} strokeWidth={1.5} />
                   </div>
@@ -399,7 +399,7 @@ export default function HomePage() {
                 <TiltCard tiltAmount={5} scale={1.02}>
                 <Link
                   href={pkg.href}
-                  className="block group border rounded-xl overflow-hidden hover:border-gold-500/30 hover:shadow-xl hover:shadow-gold-500/5 transition-all duration-300"
+                  className="block group border rounded-2xl overflow-hidden card-premium"
                   style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}
                 >
                   <div className="bg-navy-800 dark:bg-[#12122a] px-5 py-5">

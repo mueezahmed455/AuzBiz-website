@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import ThemeProvider from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
@@ -24,6 +24,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#1A2A6C" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a1a" },
+  ],
+};
 export const metadata: Metadata = {
   title: "AUZBIZ — Dream Beyond Borders | Premium Travel & Events Agency Lahore",
   description:
