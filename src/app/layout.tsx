@@ -62,6 +62,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://www.auzbizgroup.com"),
   robots: { index: true, follow: true },
+  icons: { url: '/favicon.svg' },
 };
 
 export default function RootLayout({
