@@ -34,6 +34,10 @@ import Partners from "@/components/Partners";
 import ReferralSection from "@/components/ReferralSection";
 import QuoteBuilder from "@/components/QuoteBuilder";
 import Button from "@/components/Button";
+import { AboutSection } from "@/sections/AboutSection";
+import { BlogSection } from "@/sections/BlogSection";
+import { ContactSection } from "@/sections/ContactSection";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const stats = [
   { value: "500+", label: "Happy Clients" },
@@ -345,16 +349,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── WHO WE ARE ── */}
-      <section className="py-16 sm:py-20 transition-colors duration-400">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Who We Are"
-            title="Pakistan's premium travel & business facilitation agency"
-            description="AUZBIZ — Dream Beyond Borders is a Lahore-based premium agency led by Zubair Ahmad, Chief Executive Officer (CEO) with 12+ years of expertise across travel, FMCG, and the corporate sector. We specialise in crafting seamless, memorable experiences — whether it's a spiritual Umrah journey, an adventurous group tour, a high-impact corporate event, or a life-changing study abroad opportunity."
-          />
-        </div>
-      </section>
+      {/* ── ABOUT US (Enhanced) ── */}
+      <AboutSection />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <hr className="border-gray-100" />
@@ -431,6 +427,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── BLOG SECTION (Enhanced) ── */}
+      <BlogSection />
+
       {/* ── WHY CHOOSE US ── */}
       <section className="py-16 sm:py-20 transition-colors duration-400" style={{ background: "var(--surface)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -456,155 +455,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── CONTACT ── */}
-      <section className="py-16 sm:py-20 transition-colors duration-400">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Contact Us"
-            title="Let's plan your next journey"
-          />
-          <FadeInView className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            {/* Info */}
-            <div>
-              <p className="text-sm text-gray-500 leading-relaxed mb-8">
-                Whether it&apos;s a group tour, corporate event, Umrah package, or study abroad
-                guidance — our team is ready. Reach out for a free, no-obligation consultation.
-              </p>
-              <div className="space-y-5">
-                {[
-                  {
-                    icon: User,
-                    label: "Your Host",
-                    value: "Zubair Ahmad — Chief Executive Officer (CEO)",
-                  },
-                  {
-                    icon: Phone,
-                    label: "Phone / WhatsApp",
-                    value: "+92 346 4993122",
-                  },
-                  {
-                    icon: Mail,
-                    label: "Email",
-                    value: "auzbizpak@gmail.com",
-                  },
-                  {
-                    icon: MapPin,
-                    label: "Office Address",
-                    value: "DHA II (Rehbar) Lahore-Pakistan",
-                  },
-                ].map((item) => (
-                  <div key={item.label} className="flex gap-3">
-                    <div className="w-10 h-10 icon-box rounded-lg flex items-center justify-center flex-shrink-0 text-navy-800">
-                      <item.icon size={18} strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <div className="text-[10px] text-gray-400 uppercase tracking-wider mb-0.5">{item.label}</div>
-                      <div className="text-sm font-semibold text-navy-800">{item.value}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="flex gap-3 mt-7">
-                <Button
-                  href="https://wa.me/923464993122"
-                  variant="whatsapp"
-                  size="sm"
-                >
-                  Chat on WhatsApp
-                </Button>
-              </div>
-            </div>
+      {/* ── BLOG SECTION (Enhanced) ── */}
+      <BlogSection />
 
-            {/* Form */}
-            <div className="border rounded-xl p-6 shadow-sm" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
-              <h3 className="font-semibold text-navy-800 mb-1">Send an inquiry</h3>
-              <p className="text-xs text-gray-400 mb-5">We respond within 2 hours on WhatsApp.</p>
-              <form className="space-y-3.5" onSubmit={handleFormSubmit}>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">                  Full name
-                </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Ahmed Khan"
-                    value={formData.name}
-                    onChange={(e) => handleFormChange("name", e.target.value)}
-                    className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition-all dark:bg-[#12122a] dark:border-[#2a2a5e] dark:text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Phone / WhatsApp number</label>
-                  <input
-                    type="text"
-                    placeholder="+92 3XX XXXXXXX"
-                    value={formData.phone}
-                    onChange={(e) => handleFormChange("phone", e.target.value)}
-                    className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition-all dark:bg-[#12122a] dark:border-[#2a2a5e] dark:text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Email address</label>
-                  <input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={formData.email}
-                    onChange={(e) => handleFormChange("email", e.target.value)}
-                    className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition-all dark:bg-[#12122a] dark:border-[#2a2a5e] dark:text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Service required</label>
-                  <select
-                    value={formData.service}
-                    onChange={(e) => handleFormChange("service", e.target.value)}
-                    className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition-all text-gray-500 dark:bg-[#12122a] dark:border-[#2a2a5e] dark:text-white"
-                  >
-                    <option value="">Select a service...</option>
-                    <option>Corporate Events & MICE</option>
-                    <option>Air Ticketing</option>
-                    <option>Group Tours</option>
-                    <option>Umrah Package</option>
-                    <option>Hotel Bookings</option>
-                    <option>Visa Services</option>
-                    <option>Study Abroad</option>
-                    <option>End-to-End Management</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs text-gray-500 mb-1">Your message</label>
-                  <textarea
-                    rows={3}
-                    placeholder="Tell us about your travel plans, group size, dates..."
-                    value={formData.message}
-                    onChange={(e) => handleFormChange("message", e.target.value)}
-                    className="w-full text-sm px-3.5 py-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/20 transition-all resize-none dark:bg-[#12122a] dark:border-[#2a2a5e] dark:text-white"
-                  />
-                </div>
-                {formStatus === "success" && (
-                  <div className="bg-[#1D9E75]/10 border border-[#1D9E75]/20 rounded-lg p-3 text-center">
-                    <p className="text-xs text-[#1D9E75] font-semibold">✓ Inquiry sent! We'll respond on WhatsApp within 2 hours.</p>
-                  </div>
-                )}
-                {formError && (
-                  <div className="bg-red-50 border border-red-100 rounded-lg p-3 text-center">
-                    <p className="text-xs text-red-500">{formError}</p>
-                  </div>
-                )}
-                <button
-                  type="submit"
-                  disabled={formStatus === "loading"}
-                  className="w-full bg-navy-800 text-gold-500 text-sm font-semibold py-3 rounded-lg hover:bg-navy-700 transition-colors duration-200 dark:bg-gold-500 dark:text-navy-800 dark:hover:bg-gold-400 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2"
-                >
-                  {formStatus === "loading" ? (
-                    <><Loader2 size={16} className="animate-spin" /> Sending...</>
-                  ) : (
-                    "Send Inquiry — auzbizgroup.com"
-                  )}
-                </button>
-              </form>
-            </div>
-          </FadeInView>
-        </div>
-      </section>
+      {/* ── CONTACT (Enhanced) ── */}
+      <ContactSection />
+      <div className="mt-8 flex justify-center">
+        <p className="text-navy-500 text-center">
+          Or start a WhatsApp chat for instant support →
+        </p>
+      </div>
+      <WhatsAppWidget />
 
       {/* ── TESTIMONIALS ── */}
       <section className="py-16 sm:py-20 transition-colors duration-400">
@@ -654,6 +515,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── CONTACT SECTION (Enhanced) ── */}
+      <ContactSection />
 
       {/* ── CTA BAR ── */}
       <CTABar
