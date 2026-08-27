@@ -27,7 +27,7 @@ function hasWebGL(): boolean {
 }
 
 export default function SafeHeroBackground({
-  enable3D = true,
+  enable3D = false,
 }: {
   enable3D?: boolean;
 }) {
