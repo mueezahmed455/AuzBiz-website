@@ -24,7 +24,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -119,7 +118,7 @@ export default function RootLayout({
         <ThemeProvider>
           <Analytics />
           <PageLoader />
-          <CursorGlow />
+          {/* CursorGlow disabled for stability */}
           <ScrollProgress />
           <Navbar />
           <DealBanner />
