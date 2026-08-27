@@ -1,0 +1,138 @@
+export interface VisaItem {
+  id: string;
+  country: string;
+  flag: string;
+  priceFrom: string;
+  processing: string;
+  type: string;
+  highlights: string[];
+  documents: string[];
+  popular?: boolean;
+}
+
+export const visas: VisaItem[] = [
+  {
+    id: "uae",
+    country: "UAE (Dubai)",
+    flag: "🇦🇪",
+    priceFrom: "PKR 32,000",
+    processing: "3–7 working days",
+    type: "30 / 60 Days Visit",
+    highlights: ["Express option available", "Tourist & business", "Multiple entry options"],
+    documents: ["Passport (6+ months validity)", "Photo", "CNIC copy", "Bank statement"],
+    popular: true,
+  },
+  {
+    id: "schengen",
+    country: "Schengen (Europe)",
+    flag: "🇪🇺",
+    priceFrom: "PKR 75,000",
+    processing: "15–30 working days",
+    type: "Tourist / Business",
+    highlights: ["Spain, Greece, France, Italy & more", "File preparation included", "Interview coaching"],
+    documents: ["Passport", "Travel insurance", "Itinerary", "Financials", "Cover letter"],
+    popular: true,
+  },
+  {
+    id: "uk",
+    country: "United Kingdom",
+    flag: "🇬🇧",
+    priceFrom: "PKR 95,000",
+    processing: "15–30 working days",
+    type: "Standard Visitor",
+    highlights: ["Full documentation support", "Priority service available"],
+    documents: ["Passport", "Bank statements", "Employment letter", "Travel plan"],
+    popular: true,
+  },
+  {
+    id: "usa",
+    country: "USA",
+    flag: "🇺🇸",
+    priceFrom: "PKR 95,000",
+    processing: "Interview dependent",
+    type: "B1/B2 Visitor",
+    highlights: ["DS-160 assistance", "Mock interview", "Document checklist"],
+    documents: ["Passport", "DS-160", "Photo", "Strong ties evidence"],
+  },
+  {
+    id: "canada",
+    country: "Canada",
+    flag: "🇨🇦",
+    priceFrom: "PKR 95,000",
+    processing: "4–12 weeks",
+    type: "Visitor Visa",
+    highlights: ["Online application support", "Biometrics guidance"],
+    documents: ["Passport", "Invitation (if any)", "Financial proof", "Ties to Pakistan"],
+  },
+  {
+    id: "turkey",
+    country: "Türkiye",
+    flag: "🇹🇷",
+    priceFrom: "PKR 25,000",
+    processing: "5–10 working days",
+    type: "e-Visa / Sticker",
+    highlights: ["Fast processing", "Tour & study packages"],
+    documents: ["Passport", "Photo", "Hotel booking", "Flight reservation"],
+    popular: true,
+  },
+  {
+    id: "malaysia",
+    country: "Malaysia",
+    flag: "🇲🇾",
+    priceFrom: "PKR 16,000",
+    processing: "3–7 working days",
+    type: "eVISA / STPM",
+    highlights: ["Affordable", "Ideal for families"],
+    documents: ["Passport", "Photo", "Return ticket", "Hotel booking"],
+  },
+  {
+    id: "thailand",
+    country: "Thailand",
+    flag: "🇹🇭",
+    priceFrom: "PKR 19,900",
+    processing: "5–10 working days",
+    type: "Tourist Visa",
+    highlights: ["Popular leisure destination", "Group discounts"],
+    documents: ["Passport", "Photo", "Bank statement", "Itinerary"],
+  },
+  {
+    id: "azerbaijan",
+    country: "Azerbaijan",
+    flag: "🇦🇿",
+    priceFrom: "PKR 13,000",
+    processing: "3–5 working days",
+    type: "e-Visa",
+    highlights: ["Quick approval", "Budget-friendly"],
+    documents: ["Passport", "Photo", "Email ID"],
+  },
+  {
+    id: "singapore",
+    country: "Singapore",
+    flag: "🇸🇬",
+    priceFrom: "PKR 25,000",
+    processing: "5–10 working days",
+    type: "Tourist Visa",
+    highlights: ["Transit & tourist", "Clean documentation process"],
+    documents: ["Passport", "Photo", "Bank statement", "Cover letter"],
+  },
+  {
+    id: "australia",
+    country: "Australia",
+    flag: "🇦🇺",
+    priceFrom: "PKR 95,000",
+    processing: "Varies",
+    type: "Visitor (600)",
+    highlights: ["Full form assistance", "GTE guidance"],
+    documents: ["Passport", "Financials", "Employment", "Travel history"],
+  },
+  {
+    id: "egypt",
+    country: "Egypt",
+    flag: "🇪🇬",
+    priceFrom: "PKR 75,000",
+    processing: "7–14 working days",
+    type: "Tourist Visa",
+    highlights: ["Cultural tours available"],
+    documents: ["Passport", "Photo", "Hotel booking"],
+  },
+];
