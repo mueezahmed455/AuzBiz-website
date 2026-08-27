@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { useTheme } from "./ThemeProvider";
@@ -7,6 +7,7 @@ const quickLinks = [
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Packages", href: "/packages" },
+  { label: "Visas", href: "/visas" },
   { label: "Blog", href: "/blog" },
   { label: "Contact Us", href: "/contact" },
 ];
@@ -31,9 +32,7 @@ export default function Footer() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 py-14">
-          {/* Brand */}
           <div>
             <Link href="/" className="inline-block mb-3">
               <span className="text-gold-500 font-bold text-xl tracking-wide">
@@ -49,8 +48,6 @@ export default function Footer() {
               excellence.
             </p>
           </div>
-
-          {/* Quick Links */}
           <div>
             <h4 className="text-gold-500/80 text-xs font-semibold uppercase tracking-wider mb-4">
               Quick Links
@@ -68,8 +65,6 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-
-          {/* Services */}
           <div>
             <h4 className="text-gold-500/80 text-xs font-semibold uppercase tracking-wider mb-4">
               Our Services
@@ -88,8 +83,6 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-
-        {/* Bottom bar */}
         <div className="border-t border-white/[0.08] py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-white/35 text-xs">
             © {new Date().getFullYear()} AUZBIZ — Dream Beyond Borders. All rights
