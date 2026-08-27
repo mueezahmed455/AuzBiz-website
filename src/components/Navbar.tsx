@@ -12,6 +12,7 @@ const navLinks = [
   { label: "About", href: "/about" },
   { label: "Services", href: "/services" },
   { label: "Packages", href: "/packages" },
+  { label: "Visas", href: "/visas" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
@@ -50,7 +51,6 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Logo */}
           <Link href="/" className="flex flex-col group">
             <motion.span
               className="text-gold-500 font-bold text-lg sm:text-xl tracking-wide leading-tight"
@@ -64,7 +64,6 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop links */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
@@ -81,82 +80,66 @@ export default function Navbar() {
                   }`}
                 >
                   {link.label}
-                  <motion.span
-                    layout
-                    className={`absolute bottom-1 left-1/2 -translate-x-1/2 h-0.5 bg-gold-500 rounded-full transition-all duration-500 ${
-                      isActive ? "w-8" : "w-0 group-hover:w-4"
-                    }`}
-                  />
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-underline"
+                      className="absolute bottom-0 left-3 right-3 h-0.5 bg-gold-500 rounded-full"
+                    />
+                  )}
                 </Link>
               );
             })}
           </div>
 
-          {/* Right side: theme toggle + mobile hamburger */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden text-white p-2"
-              aria-label="Toggle menu"
+            <Link
+              href="https://wa.me/923464993122"
+              className="hidden sm:inline-flex items-center px-3 py-1.5 rounded-lg bg-[#25D366] text-white text-xs font-semibold hover:bg-[#20bd5a]"
             >
-              <div className="w-5 flex flex-col gap-1.5">
-                <motion.span
-                  animate={mobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                  className="block h-0.5 bg-white rounded-full"
-                />
-                <motion.span
-                  animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
-                  className="block h-0.5 bg-white rounded-full"
-                />
-                <motion.span
-                  animate={mobileOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                  className="block h-0.5 bg-white rounded-full"
-                />
-              </div>
+              WhatsApp
+            </Link>
+            <button
+              className="md:hidden text-white p-2"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Menu"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                {mobileOpen ? (
+                  <path d="M18 6L6 18M6 6l12 12" />
+                ) : (
+                  <path d="M3 12h18M3 6h18M3 18h18" />
+                )}
+              </svg>
             </button>
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className={`fixed top-[72px] left-0 right-0 z-40 backdrop-blur-2xl border-t md:hidden overflow-hidden ${
-              isDark
-                ? "bg-[#0a0a1a]/98 border-white/[0.06]"
-                : "bg-navy-800/98 border-white/[0.06]"
-            }`}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="fixed inset-x-0 top-[60px] z-40 bg-navy-800 border-b border-white/10 md:hidden"
           >
-            <div className="px-4 py-4 flex flex-col gap-1">
-              {navLinks.map((link, i) => (
-                <motion.div
+            <div className="px-4 py-3 space-y-1">
+              {navLinks.map((link) => (
+                <Link
                   key={link.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
+                  href={link.href}
+                  className="block px-3 py-2.5 text-sm text-white/80 hover:text-gold-500"
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="block py-3.5 px-4 rounded-xl text-white/75 hover:text-gold-500 hover:bg-white/5 rounded-lg transition-colors text-sm font-medium"
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
+                  {link.label}
+                </Link>
               ))}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Spacer for fixed nav */}
-      <div className="h-[64px] sm:h-[72px]" />
+      <div className="h-16 sm:h-[68px]" />
     </>
   );
 }
