@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import ThemeProvider from "@/components/ThemeProvider";
 import Navbar from "@/components/Navbar";
@@ -62,7 +62,9 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://www.auzbizgroup.com"),
   robots: { index: true, follow: true },
-  icons: { url: '/favicon.svg' },
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({
