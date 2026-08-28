@@ -1,14 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  MessageCircle,
-  Facebook,
-  Share2,
-} from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle, Globe } from "lucide-react";
 import Logo from "./Logo";
 
 const quickLinks = [
@@ -50,12 +43,12 @@ export default function Footer() {
             <h4 className="text-gold-500/90 text-xs font-semibold uppercase tracking-wider mb-4">
               Quick links
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-1">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-white/50 hover:text-gold-500 text-sm transition-colors py-1 inline-block min-h-[44px] sm:min-h-0 sm:py-0 flex items-center"
+                    className="text-white/50 hover:text-gold-500 text-sm transition-colors flex items-center min-h-[44px] sm:min-h-[28px]"
                   >
                     {link.label}
                   </Link>
@@ -68,12 +61,12 @@ export default function Footer() {
             <h4 className="text-gold-500/90 text-xs font-semibold uppercase tracking-wider mb-4">
               Services
             </h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-1">
               {services.map((s) => (
                 <li key={s.label}>
                   <Link
                     href={s.href}
-                    className="text-white/50 hover:text-gold-500 text-sm transition-colors py-1 inline-block min-h-[44px] sm:min-h-0 sm:py-0 flex items-center"
+                    className="text-white/50 hover:text-gold-500 text-sm transition-colors flex items-center min-h-[44px] sm:min-h-[28px]"
                   >
                     {s.label}
                   </Link>
@@ -86,8 +79,8 @@ export default function Footer() {
             <h4 className="text-gold-500/90 text-xs font-semibold uppercase tracking-wider mb-4">
               Contact
             </h4>
-            <ul className="space-y-3 text-sm text-white/55">
-              <li className="flex items-start gap-2.5">
+            <ul className="space-y-1 text-sm text-white/55">
+              <li className="flex items-start gap-2.5 py-2">
                 <MapPin size={16} className="shrink-0 mt-0.5 text-gold-500/80" />
                 <span>DHA II (Rehbar), Lahore, Pakistan</span>
               </li>
@@ -117,27 +110,11 @@ export default function Footer() {
                   WhatsApp
                 </a>
               </li>
+              <li className="flex items-center gap-2.5 min-h-[44px]">
+                <Globe size={16} className="shrink-0 text-gold-500/80" />
+                <span>www.auzbizgroup.com</span>
+              </li>
             </ul>
-            <div className="flex items-center gap-3 mt-5">
-              <a
-                href="https://www.facebook.com/auzbizpak"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-gold-500 transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/auzbiz"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-gold-500 transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Share2 size={18} />
-              </a>
-            </div>
           </div>
         </div>
 
@@ -145,7 +122,7 @@ export default function Footer() {
           <p className="text-white/35 text-xs text-center sm:text-left">
             © {year} AUZBIZ Group — Dream Beyond Borders. All rights reserved.
           </p>
-          <p className="text-white/30 text-xs">www.auzbizgroup.com</p>
+          <p className="text-white/30 text-xs">Lahore, Pakistan</p>
         </div>
       </div>
     </footer>
