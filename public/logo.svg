@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200" role="img" aria-label="AUZBIZ Group">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0B1F4A"/>
+      <stop offset="100%" stop-color="#1E6FE8"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="#0B1F4A" stroke-width="4" stroke-linecap="round">
+    <circle cx="240" cy="42" r="28"/>
+    <ellipse cx="240" cy="42" rx="12" ry="28"/>
+    <path d="M212 42h56M220 28h40M220 56h40"/>
+    <path d="M255 18c28-8 48 2 58 22" stroke="#1E6FE8"/>
+    <path d="M300 28l18-6-4 14-8-2z" fill="#1E6FE8" stroke="none"/>
+  </g>
+  <text x="240" y="118" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="56" font-weight="900" letter-spacing="-1">
+    <tspan fill="#0B1F4A">AUZ</tspan><tspan fill="#1E6FE8">BIZ</tspan>
+  </text>
+  <line x1="90" y1="138" x2="180" y2="138" stroke="#0B1F4A" stroke-width="2"/>
+  <line x1="300" y1="138" x2="390" y2="138" stroke="#0B1F4A" stroke-width="2"/>
+  <text x="240" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="600" fill="#0B1F4A" letter-spacing="10">GROUP</text>
+  <text x="240" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#0B1F4A" letter-spacing="4">DREAM BEYOND BORDERS</text>
+</svg>
