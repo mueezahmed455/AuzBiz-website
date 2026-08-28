@@ -5,7 +5,6 @@ import {
   MessageSquare,
   Package,
   Plane,
-  TrendingUp,
   Users,
   Clock,
   ArrowUpRight,
@@ -186,7 +185,7 @@ export default function DashboardOverview() {
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
               <Clock size={16} className="text-sky-500" />
-              Avg response < 2 hrs
+              Avg response under 2 hrs
             </div>
           </div>
         </div>
