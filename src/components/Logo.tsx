@@ -19,6 +19,7 @@ export default function Logo({
   className = "",
 }: LogoProps) {
   const h = heights[size];
+  // Official logo is navy/blue on white — on dark nav we place it on a white pill
   const onDark = variant === "light";
 
   const inner = (
@@ -27,21 +28,21 @@ export default function Logo({
       style={
         onDark
           ? {
-              background: "rgba(255,255,255,0.96)",
+              background: "rgba(255,255,255,0.97)",
               borderRadius: 10,
-              padding: "6px 10px",
-              boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
+              padding: "5px 10px",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
             }
           : undefined
       }
     >
       <Image
-        src="/logo.svg"
+        src="/logo.jpg"
         alt="AUZBIZ Group — Dream Beyond Borders"
-        width={Math.round(h * 2.4)}
+        width={Math.round(h * 2.0)}
         height={h}
         className="object-contain"
-        style={{ height: h, width: "auto", maxWidth: size === "sm" ? 120 : size === "md" ? 150 : 190 }}
+        style={{ height: h, width: "auto", maxWidth: size === "sm" ? 130 : size === "md" ? 160 : 200 }}
         priority
         unoptimized
       />
