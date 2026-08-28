@@ -7,7 +7,7 @@ import {
   MapPin,
   MessageCircle,
   Facebook,
-  Linkedin,
+  Share2,
 } from "lucide-react";
 import Logo from "./Logo";
 
@@ -36,7 +36,7 @@ export default function Footer() {
   return (
     <footer className="bg-navy-800 text-white border-t border-white/[0.06] dark:bg-[#0a0a1a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 py-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 py-10 sm:py-14">
           <div className="sm:col-span-2 lg:col-span-1">
             <Logo size="md" variant="light" href="/" className="mb-4" />
             <p className="text-white/55 text-sm leading-relaxed max-w-xs mt-3">
@@ -55,7 +55,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-white/50 hover:text-gold-500 text-sm transition-colors"
+                    className="text-white/50 hover:text-gold-500 text-sm transition-colors py-1 inline-block min-h-[44px] sm:min-h-0 sm:py-0 flex items-center"
                   >
                     {link.label}
                   </Link>
@@ -73,7 +73,7 @@ export default function Footer() {
                 <li key={s.label}>
                   <Link
                     href={s.href}
-                    className="text-white/50 hover:text-gold-500 text-sm transition-colors"
+                    className="text-white/50 hover:text-gold-500 text-sm transition-colors py-1 inline-block min-h-[44px] sm:min-h-0 sm:py-0 flex items-center"
                   >
                     {s.label}
                   </Link>
@@ -91,22 +91,22 @@ export default function Footer() {
                 <MapPin size={16} className="shrink-0 mt-0.5 text-gold-500/80" />
                 <span>DHA II (Rehbar), Lahore, Pakistan</span>
               </li>
-              <li className="flex items-center gap-2.5">
+              <li className="flex items-center gap-2.5 min-h-[44px]">
                 <Phone size={16} className="shrink-0 text-gold-500/80" />
                 <a href="tel:+923464993122" className="hover:text-gold-500">
                   +92 346 499 3122
                 </a>
               </li>
-              <li className="flex items-center gap-2.5">
+              <li className="flex items-center gap-2.5 min-h-[44px]">
                 <Mail size={16} className="shrink-0 text-gold-500/80" />
                 <a
                   href="mailto:info@auzbizgroup.com"
-                  className="hover:text-gold-500"
+                  className="hover:text-gold-500 break-all"
                 >
                   info@auzbizgroup.com
                 </a>
               </li>
-              <li className="flex items-center gap-2.5">
+              <li className="flex items-center gap-2.5 min-h-[44px]">
                 <MessageCircle size={16} className="shrink-0 text-gold-500/80" />
                 <a
                   href="https://wa.me/923464993122"
@@ -120,24 +120,28 @@ export default function Footer() {
             </ul>
             <div className="flex items-center gap-3 mt-5">
               <a
-                href="#"
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-gold-500 transition-colors"
+                href="https://www.facebook.com/auzbizpak"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-gold-500 transition-colors"
                 aria-label="Facebook"
               >
-                <Facebook size={16} />
+                <Facebook size={18} />
               </a>
               <a
-                href="#"
-                className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-gold-500 transition-colors"
+                href="https://www.linkedin.com/company/auzbiz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-gold-500 transition-colors"
                 aria-label="LinkedIn"
               >
-                <Linkedin size={16} />
+                <Share2 size={18} />
               </a>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-white/[0.08] py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="border-t border-white/[0.08] py-6 flex flex-col sm:flex-row items-center justify-between gap-3 pb-20 md:pb-6">
           <p className="text-white/35 text-xs text-center sm:text-left">
             © {year} AUZBIZ Group — Dream Beyond Borders. All rights reserved.
           </p>
