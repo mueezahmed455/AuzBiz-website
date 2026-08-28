@@ -24,26 +24,29 @@ export default function Navbar() {
   const { isDark } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  if (pathname?.startsWith("/dashboard")) return null;
+  const isDashboard = pathname?.startsWith("/dashboard");
 
   useEffect(() => {
+    if (isDashboard) return;
     const handleScroll = () => setScrolled(window.scrollY > 12);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isDashboard]);
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
   useEffect(() => {
+    if (isDashboard) return;
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [mobileOpen]);
+  }, [mobileOpen, isDashboard]);
+
+  if (isDashboard) return null;
 
   return (
     <>
