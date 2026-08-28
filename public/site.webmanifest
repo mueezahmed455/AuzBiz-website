@@ -1,0 +1,17 @@
+{
+  "name": "AUZBIZ Group",
+  "short_name": "AUZBIZ",
+  "description": "Dream Beyond Borders — Travel, Visas & Events",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1F4A",
+  "theme_color": "#0B1F4A",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
