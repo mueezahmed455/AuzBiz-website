@@ -19,7 +19,6 @@ export default function Logo({
   className = "",
 }: LogoProps) {
   const h = heights[size];
-  // Official logo is navy/blue on white — on dark nav we place it on a white pill
   const onDark = variant === "light";
 
   const inner = (
@@ -37,9 +36,9 @@ export default function Logo({
       }
     >
       <Image
-        src="/logo.jpg"
+        src="/logo.svg"
         alt="AUZBIZ Group — Dream Beyond Borders"
-        width={Math.round(h * 2.0)}
+        width={Math.round(h * 2.4)}
         height={h}
         className="object-contain"
         style={{ height: h, width: "auto", maxWidth: size === "sm" ? 130 : size === "md" ? 160 : 200 }}
