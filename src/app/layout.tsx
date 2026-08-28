@@ -21,12 +21,16 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#1A2A6C" },
+    { media: "(prefers-color-scheme: light)", color: "#0B1F4A" },
     { media: "(prefers-color-scheme: dark)", color: "#0a0a1a" },
   ],
 };
+
 export const metadata: Metadata = {
-  title: "AUZBIZ Group — Dream Beyond Borders | Travel & Events Agency Lahore",
+  title: {
+    default: "AUZBIZ Group — Dream Beyond Borders | Travel & Events Agency Lahore",
+    template: "%s | AUZBIZ Group",
+  },
   description:
     "Pakistan's trusted travel, events, and business facilitation agency. Umrah packages, corporate MICE, group tours, air ticketing, visa services, hotel bookings, and study abroad consultancy — Lahore.",
   keywords: [
@@ -37,7 +41,10 @@ export const metadata: Metadata = {
     "Umrah packages Pakistan",
     "visa services Lahore",
     "group tours Pakistan",
+    "corporate MICE Lahore",
   ],
+  authors: [{ name: "AUZBIZ Group" }],
+  creator: "AUZBIZ Group",
   openGraph: {
     title: "AUZBIZ Group — Dream Beyond Borders",
     description:
@@ -45,12 +52,31 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "AUZBIZ Group",
     url: "https://www.auzbizgroup.com",
+    images: [
+      {
+        url: "https://www.auzbizgroup.com/logo.svg",
+        width: 480,
+        height: 200,
+        alt: "AUZBIZ Group",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AUZBIZ Group — Dream Beyond Borders",
+    description: "Umrah, tours, visas, corporate events — Lahore.",
   },
   metadataBase: new URL("https://www.auzbizgroup.com"),
   robots: { index: true, follow: true },
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    shortcut: "/favicon.svg",
   },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -65,6 +91,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="alternate icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('auzbiz-theme');var d=t||window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.classList.add(d)}catch(e){}})()`,
@@ -75,7 +104,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
+              "@type": "TravelAgency",
               name: "AUZBIZ Group",
               url: "https://www.auzbizgroup.com",
               logo: "https://www.auzbizgroup.com/logo.svg",
