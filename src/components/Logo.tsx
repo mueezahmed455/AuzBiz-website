@@ -8,7 +8,6 @@ type LogoProps = {
   size?: "sm" | "md" | "lg";
   href?: string;
   className?: string;
-  showWordmark?: boolean;
 };
 
 const heights = { sm: 36, md: 44, lg: 56 };
@@ -24,7 +23,7 @@ export default function Logo({
 
   const inner = (
     <span
-      className={`inline-flex items-center gap-2.5 ${className}`}
+      className={`inline-flex items-center ${className}`}
       style={
         onDark
           ? {
@@ -37,20 +36,24 @@ export default function Logo({
       }
     >
       <Image
-        src="/logo.jpg"
+        src="/logo.svg"
         alt="AUZBIZ Group — Dream Beyond Borders"
         width={Math.round(h * 2.4)}
         height={h}
         className="object-contain"
         style={{ height: h, width: "auto", maxWidth: size === "sm" ? 120 : size === "md" ? 150 : 190 }}
         priority
+        unoptimized
       />
     </span>
   );
 
   if (href) {
     return (
-      <Link href={href} className="inline-flex shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 rounded-lg">
+      <Link
+        href={href}
+        className="inline-flex shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 rounded-lg"
+      >
         {inner}
       </Link>
     );

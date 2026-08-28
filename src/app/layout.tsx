@@ -1,16 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import ThemeProvider from "@/components/ThemeProvider";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ScrollProgress from "@/components/ScrollProgress";
-import BackToTop from "@/components/BackToTop";
 import PageTransition from "@/components/PageTransition";
-import PageLoader from "@/components/PageLoader";
-import CursorGlow from "@/components/CursorGlow";
-import DealBanner from "@/components/DealBanner";
-import WhatsAppWidget from "@/components/WhatsAppWidget";
-import MobileCTA from "@/components/MobileCTA";
+import SiteChrome from "@/components/SiteChrome";
 import Analytics from "@/components/Analytics";
 import "./globals.css";
 
@@ -34,29 +26,24 @@ export const viewport: Viewport = {
   ],
 };
 export const metadata: Metadata = {
-  title: "AUZBIZ — Dream Beyond Borders | Premium Travel & Events Agency Lahore",
+  title: "AUZBIZ Group — Dream Beyond Borders | Travel & Events Agency Lahore",
   description:
-    "Pakistan's most trusted travel, events, and business facilitation agency. Umrah packages, corporate MICE events, group tours, air ticketing, visa services, hotel bookings, and study abroad consultancy — all under one roof in Lahore.",
+    "Pakistan's trusted travel, events, and business facilitation agency. Umrah packages, corporate MICE, group tours, air ticketing, visa services, hotel bookings, and study abroad consultancy — Lahore.",
   keywords: [
     "AUZBIZ",
+    "AUZBIZ Group",
     "Dream Beyond Borders",
     "travel agency Lahore",
     "Umrah packages Pakistan",
-    "corporate events Lahore",
-    "group tours Pakistan",
     "visa services Lahore",
-    "study abroad consultancy Pakistan",
-    "air ticketing Pakistan",
-    "hotel bookings",
-    "MICE events Lahore",
-    "Zubair Ahmad",
+    "group tours Pakistan",
   ],
   openGraph: {
-    title: "AUZBIZ — Dream Beyond Borders | Premium Travel & Events Agency",
+    title: "AUZBIZ Group — Dream Beyond Borders",
     description:
-      "Pakistan's most trusted one-stop travel and events partner. Umrah, tours, corporate events, visas, study abroad — we handle it all.",
+      "Umrah, tours, visas, corporate events — end-to-end travel partner in Lahore.",
     type: "website",
-    siteName: "AUZBIZ — Dream Beyond Borders",
+    siteName: "AUZBIZ Group",
     url: "https://www.auzbizgroup.com",
   },
   metadataBase: new URL("https://www.auzbizgroup.com"),
@@ -89,11 +76,11 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "AUZBIZ — Dream Beyond Borders",
+              name: "AUZBIZ Group",
               url: "https://www.auzbizgroup.com",
-              logo: "https://www.auzbizgroup.com/logo.png",
+              logo: "https://www.auzbizgroup.com/logo.svg",
               description:
-                "Pakistan's most trusted travel, events, and business facilitation agency. Umrah packages, corporate MICE events, group tours, air ticketing, visa services, hotel bookings, and study abroad consultancy.",
+                "Pakistan's trusted travel, events, and business facilitation agency.",
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "DHA II (Rehbar) Lahore-Pakistan",
@@ -117,18 +104,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground transition-colors duration-400">
         <ThemeProvider>
           <Analytics />
-          <PageLoader />
-          {/* CursorGlow disabled for stability */}
-          <ScrollProgress />
-          <Navbar />
-          <DealBanner />
-          <main className="flex-1 pb-14 md:pb-0">
+          <SiteChrome>
             <PageTransition>{children}</PageTransition>
-          </main>
-          <Footer />
-          <BackToTop />
-          <WhatsAppWidget />
-          <MobileCTA />
+          </SiteChrome>
         </ThemeProvider>
       </body>
     </html>
