@@ -1,9 +1,8 @@
 "use client";
 
 /**
- * TEMPORARILY DISABLED — was crashing laptops (WebGL / GPU).
- * CSS hero (SafeHeroBackground) is used instead.
- * Re-enable later with low-power WebGL guards when stable.
+ * 3D globe temporarily disabled — WebGL caused crashes on many laptops.
+ * Homepage uses SafeHeroBackground (CSS) instead.
  */
 export default function CityGlobe() {
   return null;
