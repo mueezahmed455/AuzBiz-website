@@ -1,33 +1,15 @@
-﻿"use client";
+"use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Building2,
-  Plane,
-  Globe,
-  Moon,
-  Hotel,
-  IdCard,
-  GraduationCap,
-  ClipboardCheck,
-  MapPin,
-  Phone,
-  Mail,
-  User,
-  Check,
-  Trophy,
-  Compass,
-  Heart,
-  ArrowRight,
-  Loader2,
+  Building2, Plane, Globe, Moon, Hotel, IdCard, GraduationCap, ClipboardCheck,
+  MapPin, Check, Trophy, Compass, Heart, ArrowRight, Shield, Clock, Phone,
 } from "lucide-react";
-import { SectionHeader, FadeInView, StaggerChildren, StaggerItem } from "@/components/ui";
+import { SectionHeader, StaggerChildren, StaggerItem } from "@/components/ui";
 import AnimatedCounter from "@/components/AnimatedCounter";
-import TiltCard from "@/components/TiltCard";
-import HeroParticles from "@/components/HeroParticles";
-import CityGlobe from "@/components/3d/CityGlobe";
+import SafeHeroBackground from "@/components/SafeHeroBackground";
+import QuickActions from "@/components/QuickActions";
 import CTABar from "@/components/CTABar";
 import Testimonials from "@/components/Testimonials";
 import Partners from "@/components/Partners";
@@ -37,493 +19,245 @@ import Button from "@/components/Button";
 import { AboutSection } from "@/sections/AboutSection";
 import { BlogSection } from "@/sections/BlogSection";
 import { ContactSection } from "@/sections/ContactSection";
-import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const stats = [
-  { value: "500+", label: "Happy Clients" },
-  { value: "12+", label: "Years Expertise" },
+  { value: "500+", label: "Happy clients" },
+  { value: "12+", label: "Years expertise" },
   { value: "30+", label: "Destinations" },
-  { value: "8", label: "Core Services" },
-  { value: "100%", label: "End-to-End" },
+  { value: "8", label: "Core services" },
+  { value: "2h", label: "Avg. response" },
 ];
 
 const services = [
-  {
-    icon: Building2,
-    title: "Corporate Events & MICE",
-    desc: "Incentive tours, team retreats, conferences, and corporate dinners for leading organisations.",
-  },
-  {
-    icon: Plane,
-    title: "Air Ticketing",
-    desc: "Domestic and international air tickets at best-available fares for individuals and groups.",
-  },
-  {
-    icon: Globe,
-    title: "Group Tours",
-    desc: "Curated group travel to Southeast Asia, Central Asia, Europe, and domestic destinations.",
-  },
-  {
-    icon: Moon,
-    title: "Umrah Packages",
-    desc: "Spiritually enriching Umrah journeys with 5-star hotels, guided Ziyarat, and full support.",
-  },
-  {
-    icon: Hotel,
-    title: "Hotel Bookings",
-    desc: "Verified hotel reservations worldwide — from budget-friendly stays to luxury properties.",
-  },
-  {
-    icon: IdCard,
-    title: "Visa Services",
-    desc: "Schengen, UAE, UK, Malaysia, and other visa documentation with expert advisory.",
-  },
-  {
-    icon: GraduationCap,
-    title: "Study Abroad",
-    desc: "University admissions, student visas, and guidance for Türkiye, Malaysia, and Europe.",
-  },
-  {
-    icon: ClipboardCheck,
-    title: "End-to-End Management",
-    desc: "Full-cycle travel and event management — from first enquiry to safe return home.",
-  },
+  { icon: Moon, title: "Umrah packages", desc: "5-star Makkah & Madinah stays, guided ziyarat, full ground support.", href: "/packages#umrah" },
+  { icon: IdCard, title: "Visa services", desc: "UAE, Schengen, UK, USA, Türkiye & more — file prep and honest timelines.", href: "/visas" },
+  { icon: Globe, title: "Group tours", desc: "Curated trips across Southeast Asia, Central Asia, Europe, and Pakistan.", href: "/packages" },
+  { icon: Plane, title: "Air ticketing", desc: "Domestic and international fares for individuals, families, and groups.", href: "/services" },
+  { icon: Building2, title: "Corporate MICE", desc: "Incentive tours, conferences, and team retreats for organisations.", href: "/services" },
+  { icon: Hotel, title: "Hotel bookings", desc: "Verified properties worldwide — budget through luxury.", href: "/services" },
+  { icon: GraduationCap, title: "Study abroad", desc: "University admissions and student visas for Türkiye, Malaysia, Europe.", href: "/services" },
+  { icon: ClipboardCheck, title: "End-to-end management", desc: "One team from enquiry through tickets, visas, hotels, and return.", href: "/contact" },
 ];
 
 const packages = [
-  {
-    destination: "Uzbekistan",
-    duration: "7 Nights · 8 Days",
-    price: "PKR 185,000",
-    features: ["Return airfare", "4-star hotel", "Visa assistance", "Guided city tours"],
-    href: "/packages",
-  },
-  {
-    destination: "Thailand",
-    duration: "6 Nights · 7 Days",
-    price: "PKR 210,000",
-    features: ["Return airfare", "4-star hotel", "Bangkok + Phuket", "Island excursion"],
-    href: "/packages",
-  },
-  {
-    destination: "Umrah",
-    duration: "10 Nights · 11 Days",
-    price: "PKR 320,000",
-    features: ["Return airfare", "5-star Makkah hotel", "Madinah ziyarat", "Full guided support"],
-    href: "/packages",
-  },
-  {
-    destination: "Domestic Tours",
-    duration: "3–5 Days",
-    price: "PKR 35,000",
-    features: ["Murree & Galliyat", "Hunza & Skardu", "Hotel + transport", "Group discounts"],
-    href: "/packages",
-  },
+  { destination: "Uzbekistan", region: "Central Asia", duration: "7N · 8D", price: "185,000", features: ["Return airfare", "4-star hotels", "Visa assistance", "Guided city tours"], href: "/packages" },
+  { destination: "Thailand", region: "Southeast Asia", duration: "6N · 7D", price: "210,000", features: ["Return airfare", "Bangkok + Phuket", "4-star hotels", "Island excursion"], href: "/packages" },
+  { destination: "Umrah", region: "Saudi Arabia", duration: "10N · 11D", price: "320,000", features: ["Return airfare", "5-star Makkah", "Madinah ziyarat", "Full guided support"], href: "/packages#umrah" },
+  { destination: "Domestic", region: "Pakistan", duration: "3–5 days", price: "35,000", features: ["Murree & Galliyat", "Hunza & Skardu", "Hotel + transport", "Group rates"], href: "/packages" },
+];
+
+const popularVisas = [
+  { flag: "🇦🇪", name: "UAE", price: "32,000", href: "/visas#uae" },
+  { flag: "🇪🇺", name: "Schengen", price: "75,000", href: "/visas#schengen" },
+  { flag: "🇬🇧", name: "UK", price: "95,000", href: "/visas#uk" },
+  { flag: "🇹🇷", name: "Türkiye", price: "25,000", href: "/visas#turkey" },
+  { flag: "🇲🇾", name: "Malaysia", price: "16,000", href: "/visas#malaysia" },
+  { flag: "🇹🇭", name: "Thailand", price: "19,900", href: "/visas#thailand" },
 ];
 
 const whyUs = [
-  {
-    icon: Trophy,
-    title: "Expert-Led Advisory",
-    desc: "Led by Zubair Ahmad, CEO with 12+ years across FMCG, agriculture, and tourism sectors.",
-  },
-  {
-    icon: Compass,
-    title: "Truly End-to-End",
-    desc: "Air tickets, hotels, visas, tours, events — every detail handled by one trusted team.",
-  },
-  {
-    icon: Building2,
-    title: "Corporate Specialists",
-    desc: "Trusted MICE partner for agri-input, FMCG, pharma, and financial sector companies.",
-  },
-  {
-    icon: Heart,
-    title: "Personalised Care",
-    desc: "Every trip is tailored to your needs — no cookie-cutter packages, no hidden costs.",
-  },
+  { icon: Trophy, title: "Expert-led advisory", desc: "Led by Zubair Ahmad — 12+ years across tourism, FMCG, and corporate facilitation." },
+  { icon: Compass, title: "Truly end-to-end", desc: "Tickets, hotels, visas, tours, and events handled by one accountable team." },
+  { icon: Shield, title: "Transparent pricing", desc: "Clear starting prices, realistic timelines, and no false visa guarantees." },
+  { icon: Heart, title: "Personalised care", desc: "Families, corporates, and first-time travellers — itineraries built around you." },
+];
+
+const processSteps = [
+  { step: "01", title: "Tell us the plan", desc: "Destination, dates, budget, and travellers — WhatsApp or form." },
+  { step: "02", title: "We structure it", desc: "Options for packages, visas, and flights with clear inclusions." },
+  { step: "03", title: "Confirm & depart", desc: "Documents, tickets, and briefings handled before you travel." },
 ];
 
 export default function HomePage() {
-  const [formData, setFormData] = useState({ name: "", phone: "", email: "", service: "", message: "" });
-  const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [formError, setFormError] = useState("");
-
-  const handleFormChange = (field: string, value: string) => setFormData((prev) => ({ ...prev, [field]: value }));
-
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      setFormError("Please fill in your name and phone number.");
-      return;
-    }
-    setFormStatus("loading");
-    setFormError("");
-    try {
-      const res = await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName: formData.name, phone: formData.phone, email: formData.email, service: formData.service, message: formData.message }),
-      });
-      if (!res.ok) throw new Error();
-      setFormStatus("success");
-      setFormData({ name: "", phone: "", email: "", service: "", message: "" });
-    } catch {
-      setFormStatus("error");
-      setFormError("Could not send. Please WhatsApp us directly.");
-    }
-  };
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "TravelAgency",
-    name: "AUZBIZ — Dream Beyond Borders",
-    url: "https://www.auzbizgroup.com",
-    logo: "https://www.auzbizgroup.com/og-image.jpg",
-    image: "https://www.auzbizgroup.com/og-image.jpg",
-    telephone: "+92-346-4993122",
-    email: "auzbizpak@gmail.com",
-    description:
-      "Pakistan's most trusted travel, events, and business facilitation agency. Umrah packages, corporate MICE events, group tours, air ticketing, visa services, hotel bookings, and study abroad consultancy.",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "DHA II (Rehbar) Lahore-Pakistan",
-      addressLocality: "Lahore",
-      addressCountry: "PK",
-    },
-    sameAs: [
-      "https://www.facebook.com/auzbizpak",
-      "https://www.linkedin.com/company/auzbiz",
-      "https://wa.me/923464993122",
-    ],
-    founder: {
-      "@type": "Person",
-      name: "Zubair Ahmad",
-      jobTitle: "Chief Executive Officer (CEO)",
-    },
-    areaServed: ["PK", "SA", "AE", "TH", "UZ", "TR", "MY"],
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Travel & Events Services",
-      itemListElement: [
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Corporate Events & MICE" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Air Ticketing" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Group Tours" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Umrah Packages" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Hotel Bookings" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Visa Services" } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Study Abroad" } },
-      ],
-    },
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      {/* ── HERO ── */}
       <section className="bg-navy-800 dark:bg-[#0a0a1a] relative overflow-hidden">
-        {/* Enhanced 3D particle field */}
-        <HeroParticles />
-        {/* 3D City Globe with flight routes and city markers */}
-        <div className="absolute right-0 top-0 w-3/5 h-full hidden lg:block">
-          <CityGlobe />
-        </div>
-
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-gold-500/5 blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-gold-500/5 blur-3xl" />
-        </div>
-
+        <SafeHeroBackground enable3D={false} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="pt-16 pb-14 sm:pt-24 sm:pb-20">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <span className="text-gold-500 text-xs font-semibold tracking-[0.25em] uppercase mb-4 block">
-                Your One-Stop Travel & Events Partner — Lahore, Pakistan
+          <div className="pt-14 pb-12 sm:pt-20 sm:pb-16">
+            <p className="text-gold-500 text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase mb-4">
+              Travel · Events · Visas — Lahore, Pakistan
+            </p>
+            <h1 className="text-3xl sm:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.08] tracking-tight mb-4 max-w-2xl">
+              <span className="hero-title-solid">Dream Beyond Borders™</span>
+              <span className="block text-white mt-1.5 text-[0.92em] font-semibold text-white/95">
+                One team for Umrah, visas, tours &amp; corporate travel
               </span>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.05] tracking-tight mb-5 max-w-2xl"
-            >
-              <span className="gradient-text-animated">Dream Beyond Borders™</span>
-              <motion.span
-                className="block text-gold-500 mt-1"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-              >
-                With Pakistan&apos;s Most Trusted Travel & Events Agency
-              </motion.span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="text-white/60 text-sm sm:text-base leading-relaxed max-w-xl mb-3"
-            >
-              From soul-enriching Umrah journeys and international group tours to corporate
-              MICE events, air ticketing, hotel bookings, visa services, and study abroad
-              consultancy — we deliver end-to-end excellence for individuals, families, and
-              corporates alike.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="flex items-center gap-2 text-gold-500/70 text-xs mb-7"
-            >
-              <MapPin size={14} fill="currentColor" />
-              DHA II (Rehbar) Lahore-Pakistan
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3"
-            >
-              <Button href="/packages" size="lg" className="text-center">
-                Explore Packages
-              </Button>
-              <Button href="/contact" variant="secondary" size="lg" className="text-center">
-                Free Consultation
-              </Button>
-              <Button
-                href="https://wa.me/923464993122"
-                variant="whatsapp"
-                size="lg"
-                className="text-center justify-center"
-              >
-                WhatsApp Us
-              </Button>
-            </motion.div>
+            </h1>
+            <p className="text-white/55 text-sm sm:text-[15px] leading-relaxed max-w-xl mb-5">
+              Practical planning from DHA Lahore — transparent package pricing, visa file support, and end-to-end management for families and corporates.
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/50 mb-8">
+              <span className="trust-pill"><MapPin size={12} className="text-gold-500" /> DHA II (Rehbar), Lahore</span>
+              <span className="trust-pill"><Clock size={12} className="text-gold-500" /> Reply within ~2 hours</span>
+              <span className="trust-pill"><Phone size={12} className="text-gold-500" /> +92 346 4993122</span>
+            </div>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 mb-10">
+              <Button href="/packages" variant="gold" size="lg">View packages</Button>
+              <Button href="/visas" variant="secondary" size="lg">Visa services</Button>
+              <Button href="https://wa.me/923464993122?text=Hi%20AUZBIZ%2C%20I%20need%20help%20with%20travel%20planning" variant="whatsapp" size="lg">WhatsApp us</Button>
+            </div>
+            <p className="text-[11px] font-semibold tracking-wider uppercase text-white/35 mb-3">Start with what you need</p>
+            <QuickActions />
           </div>
         </div>
-
-        {/* Wave divider to stats */}
         <div className="relative -mb-px">
-          <svg className="w-full h-6 text-gold-500" viewBox="0 0 1200 30" preserveAspectRatio="none">
+          <svg className="w-full h-5 sm:h-6 text-gold-500" viewBox="0 0 1200 30" preserveAspectRatio="none" aria-hidden>
             <path d="M0,30 L0,12 Q150,0 300,12 T600,12 T900,12 T1200,12 L1200,30 Z" fill="currentColor" />
           </svg>
         </div>
       </section>
 
-      {/* ── STATS STRIP ── */}
       <section className="bg-gold-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-3 sm:gap-y-0 sm:divide-x divide-navy-800/15">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.08 }}
-                className="py-5 text-center"
-              >
-                <AnimatedCounter
-                  target={parseInt(stat.value.replace(/\D/g, "")) || 0}
-                  suffix={stat.value.replace(/\d/g, "")}
-                  prefix={stat.value.match(/^\D+/) ? stat.value.match(/^\D+/)![0] : ""}
-                  className="text-xl sm:text-2xl font-bold text-navy-800"
-                />
-                <div className="text-[10px] sm:text-xs text-navy-800/60 mt-0.5 font-medium">
-                  {stat.label}
-                </div>
-              </motion.div>
+            {stats.map((stat) => (
+              <div key={stat.label} className="py-4 sm:py-5 text-center">
+                <AnimatedCounter target={parseInt(stat.value.replace(/\D/g, "")) || 0} suffix={stat.value.replace(/[\d.]/g, "")} prefix="" className="text-xl sm:text-2xl font-bold text-navy-800" />
+                <div className="text-[10px] sm:text-xs text-navy-800/65 mt-0.5 font-medium">{stat.label}</div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── ABOUT US (Enhanced) ── */}
+      <section className="py-12 sm:py-14" style={{ background: "var(--surface)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-7">
+            <div>
+              <p className="text-gold-500 text-xs font-semibold tracking-[0.18em] uppercase mb-1.5">Visa services</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-navy-800 dark:text-white tracking-tight">Popular visas from Pakistan</h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Starting assistance fees · Document checklists on each country page</p>
+            </div>
+            <Link href="/visas" className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy-800 dark:text-gold-500">All visas <ArrowRight size={14} /></Link>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {popularVisas.map((v) => (
+              <Link key={v.name} href={v.href} className="visa-chip rounded-xl border p-4 text-center" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
+                <span className="text-2xl block mb-1.5" aria-hidden>{v.flag}</span>
+                <span className="text-sm font-semibold text-navy-800 dark:text-white block">{v.name}</span>
+                <span className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 block">from PKR {v.price}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <AboutSection />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <hr className="border-gray-100" />
-      </div>
-
-      {/* ── SERVICES ── */}
-      <section className="py-16 sm:py-20 transition-colors duration-400" style={{ background: "var(--surface)" }}>
+      <section className="py-14" style={{ background: "var(--surface)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="What We Offer"
-            title="8 services. One trusted partner."
-            description="Everything you need — under one roof — handled with precision and care."
-          />
-          <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+          <SectionHeader eyebrow="What we offer" title="Eight services. One accountable team." description="Book what you need — or let us run the full itinerary from enquiry to return." />
+          <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-9">
             {services.map((service) => (
               <StaggerItem key={service.title}>
-                <TiltCard tiltAmount={4} scale={1.015}>
-                  <div className="border rounded-2xl p-6 hover:border-gold-500/30 card-premium group h-full" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
-                  <div className="w-10 h-10 icon-box rounded-lg flex items-center justify-center mb-4 text-navy-800 group-hover:bg-navy-800 group-hover:text-gold-500 transition-colors duration-300">
-                    <service.icon size={22} strokeWidth={1.5} />
+                <Link href={service.href} className="service-tile block border rounded-2xl p-5 h-full group" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
+                  <div className="w-11 h-11 icon-box-premium rounded-xl flex items-center justify-center mb-3.5 text-navy-800 dark:text-gold-500">
+                    <service.icon size={20} strokeWidth={1.6} />
                   </div>
-                  <h3 className="font-semibold text-sm text-navy-800 mb-2">{service.title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{service.desc}</p>                  </div>
-                </TiltCard>
+                  <h3 className="font-semibold text-[15px] text-navy-800 dark:text-white mb-1.5">{service.title}</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{service.desc}</p>
+                </Link>
               </StaggerItem>
             ))}
           </StaggerChildren>
         </div>
       </section>
 
-      {/* ── PACKAGES ── */}
-      <section className="py-16 sm:py-20 transition-colors duration-400">
+      <section className="py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Featured Packages"
-            title="Travel the world with AUZBIZ"
-            description="Handcrafted itineraries combining value, comfort, and unforgettable experiences."
-          />
-          <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+          <SectionHeader eyebrow="Featured packages" title="Clear inclusions. Honest pricing." description="Starting prices per person — final quotes depend on dates, airline, and room category." />
+          <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-9">
             {packages.map((pkg) => (
               <StaggerItem key={pkg.destination}>
-                <TiltCard tiltAmount={5} scale={1.02}>
-                <Link
-                  href={pkg.href}
-                  className="block group border rounded-2xl overflow-hidden card-premium"
-                  style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}
-                >
-                  <div className="bg-navy-800 dark:bg-[#12122a] px-5 py-5">
-                    <h3 className="text-gold-500 font-bold text-base mb-1">{pkg.destination}</h3>
-                    <p className="text-white/50 text-xs">{pkg.duration}</p>
+                <Link href={pkg.href} className="package-card block group border rounded-2xl overflow-hidden h-full" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
+                  <div className="bg-navy-800 dark:bg-[#12122a] px-5 py-4">
+                    <p className="text-[10px] font-semibold tracking-wider uppercase text-gold-500/80 mb-1">{pkg.region}</p>
+                    <h3 className="text-gold-500 font-bold text-base">{pkg.destination}</h3>
+                    <p className="text-white/45 text-xs mt-0.5">{pkg.duration}</p>
                   </div>
                   <div className="px-5 py-4">
-                    <p className="text-lg font-bold text-navy-800 mb-1">
-                      {pkg.price}{" "}
-                      <span className="text-xs text-gray-400 font-normal">/ person</span>
-                    </p>
+                    <p className="text-lg font-bold text-navy-800 dark:text-white mb-3">PKR {pkg.price} <span className="text-xs text-gray-400 font-normal">/ person</span></p>
                     <ul className="space-y-1.5 mb-4">
                       {pkg.features.map((f) => (
-                        <li key={f} className="text-xs text-gray-500 flex items-center gap-2">
-                          <Check size={12} stroke="#1D9E75" strokeWidth={2.5} />
-                          {f}
+                        <li key={f} className="text-xs text-gray-500 dark:text-gray-400 flex items-start gap-2">
+                          <Check size={12} className="text-emerald-600 mt-0.5 shrink-0" strokeWidth={2.5} />{f}
                         </li>
                       ))}
                     </ul>
-                    <span className="text-xs font-semibold text-navy-800 group-hover:text-gold-500 transition-colors duration-200">
-                      View details →
-                    </span>
+                    <span className="text-xs font-semibold text-navy-800 dark:text-gold-500">View details →</span>
                   </div>
                 </Link>
-                </TiltCard>
               </StaggerItem>
             ))}
           </StaggerChildren>
+          <div className="mt-8 text-center">
+            <Button href="/packages" variant="outline" size="md" icon={ArrowRight} iconPosition="right">Browse all packages</Button>
+          </div>
         </div>
       </section>
 
-      {/* ── BLOG SECTION (Enhanced) ── */}
-      <BlogSection />
-
-      {/* ── WHY CHOOSE US ── */}
-      <section className="py-16 sm:py-20 transition-colors duration-400" style={{ background: "var(--surface)" }}>
+      <section className="py-14" style={{ background: "var(--surface)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Why Choose AUZBIZ"
-            title="Why clients trust us — and return to us"
-            description="We combine deep industry networks, marketing expertise, and genuine care to deliver experiences that exceed expectations every time."
-          />
-          <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+          <SectionHeader eyebrow="How it works" title="Three steps from enquiry to departure" description="Clear process on WhatsApp or in person." center />
+          <div className="grid md:grid-cols-3 gap-5 mt-10 max-w-4xl mx-auto">
+            {processSteps.map((s) => (
+              <div key={s.step} className="rounded-2xl border p-6 text-center" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
+                <span className="text-gold-500 text-xs font-bold tracking-widest">{s.step}</span>
+                <h3 className="text-navy-800 dark:text-white font-semibold mt-2 mb-1.5">{s.title}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionHeader eyebrow="Why AUZBIZ" title="Why clients book with us — and return" description="Industry networks, realistic advice, and care after the ticket is issued." />
+          <StaggerChildren className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mt-9">
             {whyUs.map((item) => (
               <StaggerItem key={item.title}>
-                <TiltCard tiltAmount={4} scale={1.015}>
-                  <div className="border rounded-xl p-5 hover:border-gold-500/30 hover:shadow-lg transition-all duration-300 h-full" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
-                  <div className="w-10 h-10 icon-box rounded-lg flex items-center justify-center mb-4 text-navy-800 group-hover:bg-navy-800 group-hover:text-gold-500 transition-colors duration-300">
-                    <item.icon size={22} strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-semibold text-sm text-navy-800 mb-2">{item.title}</h3>
-                  <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>                  </div>
-                </TiltCard>
+                <div className="border rounded-xl p-5 h-full" style={{ background: "var(--card-bg)", borderColor: "var(--card-border)" }}>
+                  <div className="w-10 h-10 icon-box rounded-lg flex items-center justify-center mb-3.5"><item.icon size={20} strokeWidth={1.6} /></div>
+                  <h3 className="font-semibold text-sm text-navy-800 dark:text-white mb-1.5">{item.title}</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{item.desc}</p>
+                </div>
               </StaggerItem>
             ))}
           </StaggerChildren>
         </div>
       </section>
 
-      {/* ── BLOG SECTION (Enhanced) ── */}
       <BlogSection />
 
-      {/* ── CONTACT (Enhanced) ── */}
-      <ContactSection />
-      <div className="mt-8 flex justify-center">
-        <p className="text-navy-500 text-center">
-          Or start a WhatsApp chat for instant support →
-        </p>
-      </div>
-      <WhatsAppWidget />
-
-      {/* ── TESTIMONIALS ── */}
-      <section className="py-16 sm:py-20 transition-colors duration-400">
+      <section className="py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="What Our Clients Say"
-            title="Trusted by hundreds of happy travellers"
-            description="From corporate groups to families — hear from clients who experienced the AUZBIZ difference."
-          />
-          <div className="mt-10">
-            <Testimonials />
-          </div>
+          <SectionHeader eyebrow="Client feedback" title="Trusted by travellers and corporate teams" />
+          <div className="mt-9"><Testimonials /></div>
         </div>
       </section>
 
-      {/* ── PARTNERS ── */}
-      <section className="py-12 sm:py-16 transition-colors duration-400" style={{ background: "var(--surface)" }}>
+      <section className="py-12" style={{ background: "var(--surface)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Our Corporate Clients"
-            title="Trusted by leading organisations"
-            description="AUZBIZ serves Pakistan's top corporations with MICE events, incentive tours, and business travel management."
-            center
-          />
-          <div className="mt-10">
-            <Partners />
-          </div>
+          <SectionHeader eyebrow="Corporate clients" title="Trusted by leading organisations" center />
+          <div className="mt-8"><Partners /></div>
         </div>
       </section>
 
-      {/* ── REFERRAL PROGRAM ── */}
       <ReferralSection />
 
-      {/* ── QUOTE BUILDER ── */}
-      <section className="py-16 sm:py-20 transition-colors duration-400" style={{ background: "var(--surface)" }}>
+      <section className="py-14" style={{ background: "var(--surface)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl mx-auto">
-            <SectionHeader
-              eyebrow="Custom Quote"
-              title="Build your own package"
-              description="Don't see what you're looking for? Tell us your preferences and get a custom quote in under 2 hours."
-              center
-            />
-            <div className="mt-8">
-              <QuoteBuilder />
-            </div>
+            <SectionHeader eyebrow="Custom quote" title="Build your own package" description="Share preferences and get a tailored quote within ~2 hours." center />
+            <div className="mt-8"><QuoteBuilder /></div>
           </div>
         </div>
       </section>
 
-      {/* ── CONTACT SECTION (Enhanced) ── */}
       <ContactSection />
-
-      {/* ── CTA BAR ── */}
-      <CTABar
-        title="Ready to plan your next journey with AUZBIZ?"
-        subtitle="Free consultation · No obligation · Response within 2 hours"
-      />
+      <CTABar title="Ready to plan with AUZBIZ?" subtitle="Free consultation · No obligation · Response within ~2 hours" />
     </>
   );
 }
