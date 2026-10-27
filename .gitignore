@@ -24,6 +24,13 @@
 .DS_Store
 *.pem
 
+# dashboard content and local uploads (never commit customer data or photos)
+/.data/
+/public/uploads/
+
+# local Claude worktrees and their environment files
+/.claude/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

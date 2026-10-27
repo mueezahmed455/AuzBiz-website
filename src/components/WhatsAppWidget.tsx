@@ -35,7 +35,7 @@ export default function WhatsAppWidget() {
   };
 
   return (
-    <div className="fixed bottom-20 right-4 z-50 flex flex-col items-end gap-3 md:bottom-6 md:right-6">
+    <div className="fixed bottom-6 right-6 z-50 hidden flex-col items-end gap-3 md:flex">
       <AnimatePresence>
         {open && (
           <motion.div
@@ -43,7 +43,7 @@ export default function WhatsAppWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-white dark:bg-[#1a1a3e] border border-gray-100 dark:border-[#2a2a5e] rounded-2xl shadow-xl overflow-hidden mb-2 w-[min(18rem,calc(100vw-2rem))] sm:w-80"
+            className="bg-card border border-border dark:border-white/10 rounded-2xl shadow-xl overflow-hidden mb-2 w-[min(18rem,calc(100vw-2rem))] sm:w-80"
           >
             <div className="bg-[#25D366] px-4 py-3.5 flex items-center gap-3">
               <div className="w-9 h-9 bg-white/20 rounded-full flex items-center justify-center text-white">
@@ -51,7 +51,7 @@ export default function WhatsAppWidget() {
               </div>
               <div className="min-w-0">
                 <p className="text-white font-semibold text-sm">AUZBIZ Support</p>
-                <p className="text-white/70 text-[10px]">Typically replies within 2 hours</p>
+                <p className="text-white/70 text-[10px]">Replies during office hours</p>
               </div>
               <button
                 type="button"
@@ -64,7 +64,7 @@ export default function WhatsAppWidget() {
             </div>
 
             <div className="p-3 space-y-1.5">
-              <p className="text-[10px] text-gray-400 uppercase tracking-wider px-1 mb-2">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider px-1 mb-2">
                 Quick replies
               </p>
               {presetMessages.map((item) => (
@@ -72,12 +72,12 @@ export default function WhatsAppWidget() {
                   key={item.label}
                   type="button"
                   onClick={() => openWhatsApp(item.msg)}
-                  className="w-full text-left text-xs text-gray-600 dark:text-gray-300 px-3 py-3 rounded-xl hover:bg-[#25D366]/5 border border-transparent hover:border-[#25D366]/20 transition-all duration-200 min-h-[44px]"
+                  className="w-full text-left text-xs text-muted-foreground px-3 py-3 rounded-xl hover:bg-[#25D366]/5 border border-transparent hover:border-[#25D366]/20 transition-all duration-200 min-h-[44px]"
                 >
                   {item.label}
                 </button>
               ))}
-              <div className="border-t border-gray-100 dark:border-[#2a2a5e] pt-2 mt-2">
+              <div className="border-t border-border dark:border-white/10 pt-2 mt-2">
                 <button
                   type="button"
                   onClick={() => openWhatsApp("Hi AUZBIZ! I need help with:")}
@@ -109,7 +109,7 @@ export default function WhatsAppWidget() {
 
         {!open && (
           <motion.span
-            className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white dark:border-[#0a0a1a]"
+            className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white dark:border-slate-950"
             animate={{ scale: [1, 1.15, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           />

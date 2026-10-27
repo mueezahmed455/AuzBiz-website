@@ -14,7 +14,8 @@ export default function BackToTop() {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
   };
 
   return (
@@ -27,7 +28,7 @@ export default function BackToTop() {
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           onClick={scrollToTop}
           aria-label="Back to top"
-          className="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-navy-800 text-gold-500 flex items-center justify-center shadow-lg shadow-navy-800/25 hover:bg-navy-700 hover:scale-110 active:scale-95 transition-all duration-200 border border-gold-500/20"
+          className="fixed bottom-20 right-4 z-50 w-11 h-11 rounded-full md:bottom-24 md:right-6 bg-slate-950 text-amber-400 dark:bg-amber-500 dark:text-slate-950 flex items-center justify-center shadow-lg shadow-slate-950/25 dark:shadow-amber-500/20 hover:bg-slate-800 dark:hover:bg-amber-400 hover:scale-110 active:scale-95 transition-all duration-200 border border-amber-500/30"
         >
           <motion.div
             animate={{ y: [0, -2, 0] }}

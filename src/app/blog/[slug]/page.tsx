@@ -1,200 +1,275 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
 import type { Metadata } from "next";
-import { blogPosts, getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Clock,
+  MessageCircle,
+  Tag,
+  UserRound,
+} from "lucide-react";
+import { getPostBySlug, getRelatedPosts } from "@/lib/content/store";
+import { categoryLabel, categorySlug, readingTime } from "@/lib/content/format";
+import RichText from "@/components/RichText";
+import BlogCard from "@/components/BlogCard";
+import PostArtwork from "@/components/PostArtwork";
+
+export const dynamic = "force-dynamic";
+
+const SITE = "https://www.auzbizgroup.com";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
-  if (!post) return {};
+  const post = await getPostBySlug(slug);
+  if (!post) return { title: "Article not found" };
 
   return {
-    title: `${post.title} | AUZBIZ Travel Blog`,
+    title: post.title,
     description: post.excerpt,
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
-      publishedTime: post.date,
+      publishedTime: post.sortDate,
       tags: post.tags,
+      images: post.image ? [{ url: post.image, alt: post.imageAlt || post.title }] : undefined,
     },
+    alternates: { canonical: `${SITE}/blog/${post.slug}` },
   };
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
+  if (!post) notFound();
 
-  if (!post) {
-    notFound();
-  }
+  const related = await getRelatedPosts(post.slug, post.category, 3);
+  const shareUrl = `${SITE}/blog/${post.slug}`;
+  const shareText = `${post.title} — ${shareUrl}`;
 
-  const relatedPosts = getRelatedPosts(slug);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.sortDate,
+    dateModified: post.sortDate,
+    author: { "@type": "Organization", name: post.author },
+    publisher: {
+      "@type": "Organization",
+      name: "AUZBIZ Group",
+      logo: { "@type": "ImageObject", url: `${SITE}/favicon.svg` },
+    },
+    mainEntityOfPage: shareUrl,
+    image: post.image ? [post.image] : undefined,
+    articleSection: categoryLabel(post.category),
+    keywords: post.tags.join(", "),
+  };
 
   return (
     <>
-      {/* Breadcrumb */}
-      <section className="bg-gray-50 border-b border-gray-100 dark:bg-[#12122a] dark:border-[#2a2a5e]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex items-center gap-2 text-xs text-gray-400">
-            <Link href="/" className="hover:text-gold-500 transition-colors">Home</Link>
-            <span>/</span>
-            <Link href="/blog" className="hover:text-gold-500 transition-colors">Blog</Link>
-            <span>/</span>
-            <span className="text-gray-500 truncate max-w-[200px]">{post.title}</span>
-          </div>
-        </div>
-      </section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      {/* Article Header */}
+      <div className="border-b border-border bg-surface">
+        <nav
+          aria-label="Breadcrumb"
+          className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-3 text-[11px] text-muted-foreground sm:px-6 lg:px-8"
+        >
+          <Link href="/" className="transition-colors hover:text-foreground">
+            Home
+          </Link>
+          <span aria-hidden="true">/</span>
+          <Link href="/blog" className="transition-colors hover:text-foreground">
+            Journal
+          </Link>
+          <span aria-hidden="true">/</span>
+          <span className="truncate text-foreground">{post.title}</span>
+        </nav>
+      </div>
+
       <article>
-        <header className="bg-navy-800 dark:bg-[#0a0a1a] relative overflow-hidden py-12 sm:py-16">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-gold-500/5 blur-3xl" />
-          </div>
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="inline-block bg-gold-500/15 text-gold-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                {post.category}
+        <header className="relative overflow-hidden bg-slate-950 pb-28 pt-14 text-white sm:pb-32 sm:pt-20">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-40 -top-32 h-[30rem] w-[30rem] rounded-full bg-amber-500/15 blur-3xl"
+          />
+          <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-wrap items-center gap-3 text-[11px]">
+              <Link
+                href={`/blog?category=${categorySlug(post.category)}`}
+                className="rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 font-bold uppercase tracking-[0.16em] text-amber-300 transition-colors hover:bg-amber-400/20"
+              >
+                {categoryLabel(post.category)}
+              </Link>
+              <span className="inline-flex items-center gap-1.5 text-white/60">
+                <CalendarDays size={12} /> {post.date}
               </span>
-              <span className="text-white/40 text-xs">{post.date}</span>
-              <span className="text-white/40 text-xs">·</span>
-              <span className="text-white/40 text-xs">{post.readTime} read</span>
+              <span className="inline-flex items-center gap-1.5 text-white/60">
+                <Clock size={12} /> {readingTime(post.readTime)}
+              </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight">
+
+            <h1 className="mt-6 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
               {post.title}
             </h1>
+            <p className="mt-5 max-w-3xl text-base leading-relaxed text-white/60 sm:text-lg">
+              {post.excerpt}
+            </p>
+
+            <div className="mt-7 flex items-center gap-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-amber-300">
+                <UserRound size={15} />
+              </span>
+              <div>
+                <p className="text-xs font-semibold text-white">{post.author}</p>
+                <p className="text-[11px] text-white/60">AUZBIZ Group · Lahore</p>
+              </div>
+            </div>
           </div>
         </header>
 
-        {/* Article Content */}
-        <div className="py-10 sm:py-14">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="prose prose-sm sm:prose-base max-w-none prose-headings:text-navy-800 prose-p:text-gray-600 prose-a:text-gold-500 dark:prose-headings:text-white dark:prose-p:text-gray-400">
-              {post.content.map((paragraph, i) => (
-                <p key={i} className="text-sm sm:text-base text-gray-600 dark:text-gray-400 leading-relaxed mb-5">
-                  {paragraph}
-                </p>
+        <div className="relative mx-auto -mt-16 max-w-5xl px-4 sm:-mt-20 sm:px-6 lg:px-8">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl sm:rounded-3xl">
+            {post.image ? (
+              <Image
+                src={post.image}
+                alt={post.imageAlt || post.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 1024px"
+                className="object-cover"
+                priority
+              />
+            ) : (
+              <PostArtwork title={post.title} category={categoryLabel(post.category)} />
+            )}
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
+          <RichText blocks={post.content} />
+
+          {post.tags.length > 0 && (
+            <div className="mt-10 flex flex-wrap items-center gap-2 border-t border-border pt-6">
+              <Tag size={14} className="text-muted-foreground" />
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-border bg-surface px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+                >
+                  {tag}
+                </span>
               ))}
             </div>
+          )}
 
-            {/* Tags */}
-            <div className="mt-8 pt-6 border-t border-gray-100 dark:border-[#2a2a5e]">
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[11px] px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-full text-gray-500 dark:bg-[#1a1a3e] dark:border-[#2a2a5e]"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
+          <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold text-foreground">Found this useful?</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Send it to someone planning the same trip.
+              </p>
             </div>
-
-            {/* Share */}
-            <div className="mt-6 flex items-center gap-3">
-              <span className="text-xs text-gray-400 font-medium">Share this article:</span>
+            <div className="flex items-center gap-2">
               <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=https://www.auzbizgroup.com/blog/${post.slug}`}
+                href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-[#1877F2] rounded-full flex items-center justify-center text-white hover:bg-[#166fe5] transition-colors"
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-emerald-400 hover:text-emerald-500"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" /></svg>
+                <MessageCircle size={14} /> WhatsApp
               </a>
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(`Check out this article: ${post.title} - https://www.auzbizgroup.com/blog/${post.slug}`)}`}
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-[#25D366] rounded-full flex items-center justify-center text-white hover:bg-[#20bd5a] transition-colors"
+                className="inline-flex h-9 items-center rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-sky-400 hover:text-sky-500"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" /></svg>
+                Facebook
               </a>
               <a
-                href={`https://www.linkedin.com/shareArticle?mini=true&url=https://www.auzbizgroup.com/blog/${post.slug}&title=${encodeURIComponent(post.title)}`}
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 bg-[#0A66C2] rounded-full flex items-center justify-center text-white hover:bg-[#0959a8] transition-colors"
+                className="inline-flex h-9 items-center rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-sky-500 hover:text-sky-600"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z" /></svg>
+                LinkedIn
               </a>
             </div>
+          </div>
+
+          <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft size={15} /> All articles
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-amber-600 hover:underline dark:text-amber-400"
+            >
+              Plan this trip <ArrowRight size={14} />
+            </Link>
           </div>
         </div>
       </article>
 
-      {/* Related Posts */}
-      {relatedPosts.length > 0 && (
-        <section className="bg-[#F9F9FB] dark:bg-[#12122a] py-12 sm:py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-lg font-bold text-navy-800 dark:text-white mb-6">Related Articles</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {relatedPosts.map((rp) => (
-                <Link
-                  key={rp.slug}
-                  href={`/blog/${rp.slug}`}
-                  className="bg-white dark:bg-[#1a1a3e] border border-gray-100 dark:border-[#2a2a5e] rounded-xl overflow-hidden hover:border-gold-500/30 hover:shadow-lg transition-all duration-300 group"
-                >
-                  <div className="bg-navy-800 px-5 py-5">
-                    <span className="inline-block text-[9px] font-bold px-2.5 py-1 bg-gold-500/15 text-gold-500 rounded-full uppercase tracking-wider mb-2.5">
-                      {rp.category}
-                    </span>
-                    <h3 className="text-white font-semibold text-sm leading-snug group-hover:text-gold-500 transition-colors">
-                      {rp.title}
-                    </h3>
-                  </div>
-                  <div className="px-5 py-3 flex items-center justify-between">
-                    <span className="text-[10px] text-gray-400">{rp.date} · {rp.readTime}</span>
-                    <span className="text-[10px] font-semibold text-navy-800 dark:text-gold-500 group-hover:text-gold-500 transition-colors">
-                      Read →
-                    </span>
-                  </div>
-                </Link>
+      {related.length > 0 && (
+        <section className="border-t border-border bg-surface py-14 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-7 flex items-end justify-between gap-4">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-400">
+                  Keep reading
+                </p>
+                <h2 className="mt-1.5 text-2xl font-bold tracking-tight text-foreground">
+                  Related articles
+                </h2>
+              </div>
+              <Link
+                href="/blog"
+                className="hidden text-sm font-medium text-muted-foreground hover:text-foreground sm:inline-flex"
+              >
+                View all
+              </Link>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {related.map((entry) => (
+                <BlogCard key={entry.id} post={entry} />
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* CTA */}
-      <div className="bg-gold-500 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <section className="bg-slate-950 py-14 text-white">
+        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 px-4 sm:flex-row sm:items-center sm:px-6 lg:px-8">
           <div>
-            <p className="text-navy-800 font-semibold text-base sm:text-lg">
-              Ready to plan your next journey?
+            <h2 className="text-xl font-bold tracking-tight">Need help applying this to your trip?</h2>
+            <p className="mt-1.5 text-sm text-white/55">
+              Send your route, dates, and traveller count. We will reply with real options.
             </p>
-            <p className="text-navy-800/60 text-sm">Free consultation · No obligation</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Link
-              href="/packages"
-              className="bg-navy-800 text-gold-500 text-sm font-semibold px-6 py-2.5 rounded-lg hover:bg-navy-700 transition-colors"
-            >
-              View Packages
-            </Link>
-            <Link
-              href="https://wa.me/923464993122"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#25D366] text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-[#20bd5a] transition-colors inline-flex items-center gap-2"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347" />
-              </svg>
-              Chat Now
-            </Link>
-          </div>
+          <a
+            href="https://wa.me/923464993122"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-slate-950 transition-colors hover:bg-amber-400"
+          >
+            <MessageCircle size={16} /> Chat on WhatsApp
+          </a>
         </div>
-      </div>
+      </section>
     </>
   );
 }

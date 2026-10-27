@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { addInquiry } from "@/lib/content/store";
 
 const EMAIL_TO = process.env.EMAIL_TO || "auzbizpak@gmail.com";
 
@@ -108,10 +109,43 @@ Sent from auzbizgroup.com
       console.warn("Email send failed:", emailErr instanceof Error ? emailErr.message : "unknown");
     }
 
+    // Save to the dashboard store as well as emailing the office. If storage is
+    // not configured on this deployment the email above still carries the lead.
+    let saved = false;
+    try {
+      await addInquiry({
+        name: `${firstName} ${lastName}`.trim(),
+        phone,
+        email,
+        service,
+        destination,
+        travelDates,
+        groupSize,
+        message,
+      });
+      saved = true;
+    } catch (storeErr) {
+      console.warn(
+        "Inquiry could not be saved to the dashboard:",
+        storeErr instanceof Error ? storeErr.message : "unknown",
+      );
+    }
+
+    if (!emailSent && !saved) {
+      return NextResponse.json(
+        {
+          error:
+            "We could not record your enquiry. Please WhatsApp us on +92 346 4993122 and we will reply straight away.",
+        },
+        { status: 502 },
+      );
+    }
+
     return NextResponse.json({
       success: true,
       emailSent,
-      message: "Inquiry received successfully! We will respond via WhatsApp within 2 hours.",
+      saved,
+      message: "Inquiry received. We will reply on WhatsApp during office hours.",
     });
   } catch (err) {
     console.error("Inquiry API error:", err instanceof Error ? err.message : err);

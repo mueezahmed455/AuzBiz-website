@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Keep Turbopack scoped to this project when a parent directory also has a
+  // lockfile (for example, in a multi-project local workspace).
+  turbopack: {
+    root: __dirname,
+  },
+
   // ═══ Performance Optimizations ═══
 
   // Image optimization
@@ -9,6 +15,11 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+    // Photos uploaded by the dashboard when Vercel Blob is configured.
+    remotePatterns: [
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+      { protocol: "https", hostname: "*.blob.vercel-storage.com" },
+    ],
   },
 
   // Enable React strict mode for better development
@@ -35,6 +46,17 @@ const nextConfig: NextConfig = {
     ],
     // Enable CSS optimization
     optimizeCss: false, // Set to true if using @next/bundle-analyzer or critters
+  },
+
+  // Keep old package URLs working after the catalogue moved to /group-tours.
+  async redirects() {
+    return [
+      {
+        source: "/packages",
+        destination: "/group-tours",
+        permanent: true,
+      },
+    ];
   },
 
   // Headers for caching and security

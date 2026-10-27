@@ -1,128 +1,149 @@
 "use client";
 
 import Link from "next/link";
-import { Mail, Phone, MapPin, MessageCircle, Globe } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { ArrowRight, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import Logo from "./Logo";
 
-const quickLinks = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Services", href: "/services" },
-  { label: "Packages", href: "/packages" },
-  { label: "Visas", href: "/visas" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
-];
-
-const services = [
-  { label: "Umrah Packages", href: "/packages" },
-  { label: "Group Tours", href: "/packages" },
-  { label: "Visa Services", href: "/visas" },
-  { label: "Corporate MICE", href: "/services" },
-  { label: "Air Ticketing", href: "/services" },
-  { label: "Study Abroad", href: "/services" },
+const footerCols = [
+  {
+    heading: "Company",
+    items: [
+      { label: "About us", href: "/about" },
+      { label: "Services", href: "/services" },
+      { label: "Group tours", href: "/group-tours" },
+      { label: "Visa catalogue", href: "/visas" },
+      { label: "Journal", href: "/blog" },
+    ],
+  },
+  {
+    heading: "Flight tools",
+    items: [
+      { label: "Ticket price analysis", href: "/ticket-analysis" },
+      { label: "Trip status check", href: "/live-tracking" },
+      { label: "Plane radar", href: "/plane-tracking" },
+    ],
+  },
+  {
+    heading: "Plan",
+    items: [
+      { label: "Start an enquiry", href: "/contact" },
+      { label: "Build a custom quote", href: "/contact" },
+      { label: "Talk on WhatsApp", href: "https://wa.me/923464993122" },
+    ],
+  },
 ];
 
 export default function Footer() {
-  const year = new Date().getFullYear();
+  const pathname = usePathname();
 
   return (
-    <footer className="bg-navy-800 text-white border-t border-white/[0.06] dark:bg-[#0a0a1a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 py-10 sm:py-14">
-          <div className="sm:col-span-2 lg:col-span-1">
-            <Logo size="md" variant="light" href="/" className="mb-4" />
-            <p className="text-white/55 text-sm leading-relaxed max-w-xs mt-3">
-              Pakistan's premium travel, events and business facilitation
-              agency. End-to-end excellence for individuals, families and
-              organisations.
+    <footer className="border-t border-border bg-surface dark:border-white/5 dark:bg-slate-950">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_2fr]">
+          <div>
+            <Logo size="md" variant="auto" />
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              End-to-end travel from Lahore — Umrah, group tours, visas, corporate
+              MICE, and practical flight tools. Clear inclusions, honest
+              timelines, one accountable desk.
             </p>
-          </div>
 
-          <div>
-            <h4 className="text-gold-500/90 text-xs font-semibold uppercase tracking-wider mb-4">
-              Quick links
-            </h4>
-            <ul className="space-y-1">
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-white/50 hover:text-gold-500 text-sm transition-colors flex items-center min-h-[44px] sm:min-h-[28px]"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-gold-500/90 text-xs font-semibold uppercase tracking-wider mb-4">
-              Services
-            </h4>
-            <ul className="space-y-1">
-              {services.map((s) => (
-                <li key={s.label}>
-                  <Link
-                    href={s.href}
-                    className="text-white/50 hover:text-gold-500 text-sm transition-colors flex items-center min-h-[44px] sm:min-h-[28px]"
-                  >
-                    {s.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-gold-500/90 text-xs font-semibold uppercase tracking-wider mb-4">
-              Contact
-            </h4>
-            <ul className="space-y-1 text-sm text-white/55">
-              <li className="flex items-start gap-2.5 py-2">
-                <MapPin size={16} className="shrink-0 mt-0.5 text-gold-500/80" />
-                <span>DHA II (Rehbar), Lahore, Pakistan</span>
+            <ul className="mt-6 space-y-3 text-sm">
+              <li className="flex items-start gap-3">
+                <MapPin size={16} className="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                <span className="text-muted-foreground">DHA II (Rehbar), Lahore, Pakistan</span>
               </li>
-              <li className="flex items-center gap-2.5 min-h-[44px]">
-                <Phone size={16} className="shrink-0 text-gold-500/80" />
-                <a href="tel:+923464993122" className="hover:text-gold-500">
-                  +92 346 499 3122
+              <li className="flex items-start gap-3">
+                <Phone size={16} className="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                <a href="tel:+923464993122" className="text-muted-foreground transition-colors hover:text-foreground">
+                  +92 346 4993122
                 </a>
               </li>
-              <li className="flex items-center gap-2.5 min-h-[44px]">
-                <Mail size={16} className="shrink-0 text-gold-500/80" />
-                <a
-                  href="mailto:info@auzbizgroup.com"
-                  className="hover:text-gold-500 break-all"
-                >
-                  info@auzbizgroup.com
+              <li className="flex items-start gap-3">
+                <Mail size={16} className="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" />
+                <a href="mailto:auzbizpak@gmail.com" className="text-muted-foreground transition-colors hover:text-foreground">
+                  auzbizpak@gmail.com
                 </a>
               </li>
-              <li className="flex items-center gap-2.5 min-h-[44px]">
-                <MessageCircle size={16} className="shrink-0 text-gold-500/80" />
+              <li className="flex items-start gap-3">
+                <MessageCircle size={16} className="mt-0.5 shrink-0 text-amber-600 dark:text-amber-400" />
                 <a
                   href="https://wa.me/923464993122"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-gold-500"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  WhatsApp
+                  WhatsApp the travel desk
                 </a>
               </li>
-              <li className="flex items-center gap-2.5 min-h-[44px]">
-                <Globe size={16} className="shrink-0 text-gold-500/80" />
-                <span>www.auzbizgroup.com</span>
-              </li>
             </ul>
+
+            <div className="mt-6 flex items-center gap-3">
+              <a
+                href="https://www.facebook.com/auzbizpak"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-9 items-center rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+              >
+                Facebook
+              </a>
+              <a
+                href="https://www.linkedin.com/company/auzbiz"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-9 items-center rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+            {footerCols.map((col) => (
+              <div key={col.heading}>
+                <h3 className="text-sm font-semibold tracking-tight text-foreground">
+                  {col.heading}
+                </h3>
+                <ul className="mt-4 space-y-2.5">
+                  {col.items.map((item) => {
+                    const active = item.href === pathname;
+                    const external = item.href.startsWith("http");
+                    return (
+                      <li key={item.label}>
+                        <Link
+                          href={item.href}
+                          target={external ? "_blank" : undefined}
+                          rel={external ? "noopener noreferrer" : undefined}
+                          className={`text-sm transition-colors ${
+                            active
+                              ? "text-amber-600 dark:text-amber-400"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="border-t border-white/[0.08] py-6 flex flex-col sm:flex-row items-center justify-between gap-3 pb-20 md:pb-6">
-          <p className="text-white/35 text-xs text-center sm:text-left">
-            © {year} AUZBIZ Group — Dream Beyond Borders. All rights reserved.
+        <div className="mt-10 flex flex-col gap-4 border-t border-border pt-6 text-xs text-muted-foreground dark:border-white/5 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} AUZBIZ Group. All rights reserved.</p>
+          <p className="max-w-md sm:text-right">
+            Prices and availability are confirmed at the time of booking. Visa
+            outcomes are decided by the relevant authority.
           </p>
-          <p className="text-white/30 text-xs">Lahore, Pakistan</p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-1.5 font-semibold text-foreground transition-colors hover:text-amber-600 dark:hover:text-amber-400"
+          >
+            Start an enquiry <ArrowRight size={13} />
+          </Link>
         </div>
       </div>
     </footer>

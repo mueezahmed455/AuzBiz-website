@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 200" role="img" aria-label="AUZBIZ Group — Dream Beyond Borders">
+  <g fill="none" stroke="#f8fafc" stroke-width="3.5" stroke-linecap="round">
+    <circle cx="240" cy="42" r="28"/>
+    <ellipse cx="240" cy="42" rx="11" ry="28"/>
+    <path d="M212 42h56"/>
+    <path d="M218 28h44"/>
+    <path d="M218 56h44"/>
+  </g>
+  <path d="M255 18c26-7 46 3 56 20" fill="none" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+  <path d="M302 26l16-5-3.5 12.5-7-1.5z" fill="#fbbf24"/>
+  <text x="240" y="116" text-anchor="middle" font-family="Arial Black, Helvetica Neue, Arial, sans-serif" font-size="54" font-weight="900" letter-spacing="-1.2">
+    <tspan fill="#f8fafc">AUZ</tspan><tspan fill="#fbbf24">BIZ</tspan>
+  </text>
+  <line x1="95" y1="136" x2="175" y2="136" stroke="#f8fafc" stroke-width="2"/>
+  <line x1="305" y1="136" x2="385" y2="136" stroke="#f8fafc" stroke-width="2"/>
+  <text x="240" y="142" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#f8fafc" letter-spacing="9">GROUP</text>
+  <text x="240" y="170" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="500" fill="#f8fafc" letter-spacing="3.5">DREAM BEYOND BORDERS</text>
+</svg>

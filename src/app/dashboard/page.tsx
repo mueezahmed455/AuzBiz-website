@@ -1,224 +1,293 @@
-"use client";
-
 import Link from "next/link";
 import {
-  MessageSquare,
-  Package,
-  Plane,
-  Users,
-  Clock,
   ArrowUpRight,
-  CheckCircle2,
-  AlertCircle,
+  FileText,
+  Images,
+  MessageSquare,
+  Plus,
+  AlertTriangle,
+  ExternalLink,
 } from "lucide-react";
+import { getContent, getStorageMode, sortPosts } from "@/lib/content/store";
+import type { SiteContent } from "@/lib/content/types";
 
-const kpis = [
-  {
-    label: "New inquiries",
-    value: "24",
-    change: "+6 this week",
-    icon: MessageSquare,
-    tone: "bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-300",
-  },
-  {
-    label: "Active packages",
-    value: "12",
-    change: "3 featured",
-    icon: Package,
-    tone: "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300",
-  },
-  {
-    label: "Visa files open",
-    value: "18",
-    change: "5 urgent",
-    icon: Plane,
-    tone: "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300",
-  },
-  {
-    label: "Clients served",
-    value: "500+",
-    change: "Lifetime",
-    icon: Users,
-    tone: "bg-violet-50 text-violet-700 dark:bg-violet-500/10 dark:text-violet-300",
-  },
-];
+export const dynamic = "force-dynamic";
 
-const recentInquiries = [
-  {
-    name: "Ahmed Raza",
-    type: "Umrah · Family of 4",
-    channel: "WhatsApp",
-    time: "12 min ago",
-    status: "New",
-  },
-  {
-    name: "Sara Khan",
-    type: "Schengen visa · Couple",
-    channel: "Website",
-    time: "1 hr ago",
-    status: "In progress",
-  },
-  {
-    name: "Fast Agro HR",
-    type: "Corporate MICE · Thailand",
-    channel: "Email",
-    time: "3 hrs ago",
-    status: "Quoted",
-  },
-  {
-    name: "Bilal Hussain",
-    type: "Uzbekistan tour · 8 pax",
-    channel: "WhatsApp",
-    time: "Yesterday",
-    status: "New",
-  },
-];
+function formatDate(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
 
-const pipeline = [
-  { label: "New leads", count: 9, color: "bg-blue-500" },
-  { label: "Documents pending", count: 7, color: "bg-amber-500" },
-  { label: "Submitted", count: 5, color: "bg-sky-500" },
-  { label: "Approved / booked", count: 11, color: "bg-emerald-500" },
-];
+export default async function DashboardOverviewPage() {
+  let content: SiteContent;
+  let storageError = "";
+  try {
+    content = await getContent();
+  } catch (error) {
+    storageError = error instanceof Error ? error.message : "Could not read content.";
+    content = {
+      blogPosts: [],
+      tours: [],
+      inquiries: [],
+      version: 1,
+      updatedAt: "",
+    };
+  }
 
-export default function DashboardOverview() {
+  const posts = sortPosts(content.blogPosts);
+  const published = posts.filter((post) => post.status === "published").length;
+  const drafts = posts.filter((post) => post.status === "draft").length;
+  const liveTours = content.tours.filter((tour) => tour.status === "published").length;
+  const tourDrafts = content.tours.filter((tour) => tour.status === "draft").length;
+  const newInquiries = content.inquiries.filter((inquiry) => inquiry.status === "new").length;
+
+  const stats = [
+    {
+      label: "Published articles",
+      value: published,
+      detail: `${drafts} draft${drafts === 1 ? "" : "s"}`,
+      icon: FileText,
+      href: "/dashboard/blog",
+    },
+    {
+      label: "Live group tours",
+      value: liveTours,
+      detail: `${tourDrafts} draft${tourDrafts === 1 ? "" : "s"}`,
+      icon: Images,
+      href: "/dashboard/tours",
+    },
+    {
+      label: "New inquiries",
+      value: newInquiries,
+      detail: `${content.inquiries.length} total`,
+      icon: MessageSquare,
+      href: "/dashboard/inquiries",
+    },
+  ];
+
+  const recentInquiries = content.inquiries.slice(0, 5);
+  const recentPosts = posts.slice(0, 4);
+  const recentTours = [...content.tours]
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    .slice(0, 3);
+
   return (
-    <div className="space-y-8 max-w-6xl">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-          Overview
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Snapshot of inquiries, packages, and visa files.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {kpis.map((k) => (
-          <div
-            key={k.label}
-            className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#12122a] p-4 sm:p-5"
-          >
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                  {k.label}
-                </p>
-                <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-white">
-                  {k.value}
-                </p>
-                <p className="mt-1 text-xs text-gray-400">{k.change}</p>
-              </div>
-              <div className={`p-2 rounded-lg ${k.tone}`}>
-                <k.icon size={18} strokeWidth={1.75} />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#12122a] overflow-hidden">
-          <div className="px-5 py-4 border-b border-gray-100 dark:border-white/10 flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900 dark:text-white">Recent inquiries</h2>
-            <Link
-              href="/dashboard/inquiries"
-              className="text-xs font-medium text-navy-700 dark:text-gold-500 hover:underline inline-flex items-center gap-1"
-            >
-              View all <ArrowUpRight size={14} />
-            </Link>
-          </div>
-          <ul className="divide-y divide-gray-100 dark:divide-white/5">
-            {recentInquiries.map((inq) => (
-              <li key={inq.name} className="px-5 py-3.5 flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="font-medium text-sm text-gray-900 dark:text-white truncate">
-                    {inq.name}
-                  </p>
-                  <p className="text-xs text-gray-500 truncate">{inq.type}</p>
-                </div>
-                <div className="text-right shrink-0">
-                  <span
-                    className={`inline-flex text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full ${
-                      inq.status === "New"
-                        ? "bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300"
-                        : inq.status === "In progress"
-                          ? "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300"
-                          : "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
-                    }`}
-                  >
-                    {inq.status}
-                  </span>
-                  <p className="text-[11px] text-gray-400 mt-1">{inq.time}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#12122a] p-5">
-          <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Pipeline</h2>
-          <div className="space-y-3">
-            {pipeline.map((p) => (
-              <div key={p.label}>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-600 dark:text-gray-300">{p.label}</span>
-                  <span className="font-semibold text-gray-900 dark:text-white">{p.count}</span>
-                </div>
-                <div className="h-1.5 rounded-full bg-gray-100 dark:bg-white/10 overflow-hidden">
-                  <div
-                    className={`h-full rounded-full ${p.color}`}
-                    style={{ width: `${Math.min(100, p.count * 6)}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 pt-4 border-t border-gray-100 dark:border-white/10 space-y-2">
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-              <CheckCircle2 size={16} className="text-emerald-500" />
-              11 closed this month
-            </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-              <AlertCircle size={16} className="text-amber-500" />
-              5 need follow-up today
-            </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-              <Clock size={16} className="text-sky-500" />
-              Avg response under 2 hrs
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-gradient-to-br from-navy-800 to-navy-900 text-white p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-8">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h3 className="font-semibold text-lg">Quick actions</h3>
-          <p className="text-sm text-white/70 mt-1">
-            Jump to the tools you use most.
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-400">
+            Overview
+          </p>
+          <h1 className="mt-1.5 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Everything in one place
+          </h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Blog articles, group tour galleries, and enquiries from the website.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Link
-            href="/dashboard/inquiries"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gold-500 text-navy-900 text-sm font-semibold hover:bg-gold-400"
+            href="/dashboard/blog/new"
+            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-amber-400"
           >
-            <MessageSquare size={16} /> Inquiries
+            <Plus size={15} /> New article
           </Link>
           <Link
-            href="/dashboard/packages"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white text-sm font-medium hover:bg-white/15"
+            href="/dashboard/tours/new"
+            className="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800 dark:bg-amber-500 dark:text-slate-950 dark:hover:bg-amber-400"
           >
-            <Package size={16} /> Packages
-          </Link>
-          <Link
-            href="/dashboard/visas"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white text-sm font-medium hover:bg-white/15"
-          >
-            <Plane size={16} /> Visas
+            <Plus size={15} /> New group tour
           </Link>
         </div>
+      </header>
+
+      {storageError && (
+        <div className="flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
+          <AlertTriangle size={18} className="mt-0.5 shrink-0" />
+          <div>
+            <p className="font-semibold">Content storage needs attention</p>
+            <p className="mt-1 leading-relaxed">{storageError}</p>
+            {getStorageMode() === "unconfigured" && (
+              <p className="mt-2 leading-relaxed">
+                In Vercel: Storage → Blob → connect a store, then redeploy. The token is added
+                automatically as <code className="font-mono text-[12px]">BLOB_READ_WRITE_TOKEN</code>.
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      <section className="grid gap-4 sm:grid-cols-3">
+        {stats.map((stat) => (
+          <Link
+            key={stat.label}
+            href={stat.href}
+            className="group rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-lg"
+          >
+            <div className="flex items-start justify-between">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface text-amber-600 dark:text-amber-400">
+                <stat.icon size={18} />
+              </span>
+              <ArrowUpRight
+                size={16}
+                className="text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </div>
+            <p className="mt-4 text-3xl font-bold tracking-tight text-foreground">{stat.value}</p>
+            <p className="mt-1 text-sm font-medium text-foreground">{stat.label}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">{stat.detail}</p>
+          </Link>
+        ))}
+      </section>
+
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+        <section className="rounded-2xl border border-border bg-card">
+          <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
+            <div>
+              <h2 className="text-sm font-semibold text-foreground">Recent enquiries</h2>
+              <p className="text-[11px] text-muted-foreground">Newest messages from the website.</p>
+            </div>
+            <Link
+              href="/dashboard/inquiries"
+              className="text-xs font-semibold text-amber-600 hover:underline dark:text-amber-400"
+            >
+              View all
+            </Link>
+          </div>
+
+          {recentInquiries.length === 0 ? (
+            <div className="px-5 py-14 text-center">
+              <MessageSquare size={22} className="mx-auto text-muted-foreground" />
+              <p className="mt-3 text-sm font-medium text-foreground">No enquiries yet</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Messages sent through the contact form will appear here.
+              </p>
+            </div>
+          ) : (
+            <ul className="divide-y divide-border">
+              {recentInquiries.map((inquiry) => (
+                <li key={inquiry.id} className="flex items-start gap-3 px-5 py-3.5">
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber-500" />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="truncate text-sm font-medium text-foreground">{inquiry.name}</p>
+                      <span className="shrink-0 text-[11px] text-muted-foreground">
+                        {formatDate(inquiry.createdAt)}
+                      </span>
+                    </div>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {inquiry.service || "General enquiry"} · {inquiry.phone}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="space-y-6">
+          <div className="rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
+              <h2 className="text-sm font-semibold text-foreground">Recent articles</h2>
+              <Link
+                href="/dashboard/blog"
+                className="text-xs font-semibold text-amber-600 hover:underline dark:text-amber-400"
+              >
+                Manage
+              </Link>
+            </div>
+            {recentPosts.length === 0 ? (
+              <p className="px-5 py-8 text-center text-xs text-muted-foreground">No articles yet.</p>
+            ) : (
+              <ul className="divide-y divide-border">
+                {recentPosts.map((post) => (
+                  <li key={post.id}>
+                    <Link
+                      href={`/dashboard/blog/${post.id}`}
+                      className="flex items-start gap-3 px-5 py-3.5 transition-colors hover:bg-surface"
+                    >
+                      <FileText size={15} className="mt-0.5 shrink-0 text-muted-foreground" />
+                      <div className="min-w-0 flex-1">
+                        <p className="line-clamp-2 text-sm font-medium text-foreground">{post.title}</p>
+                        <p className="mt-0.5 text-[11px] text-muted-foreground">
+                          {post.status === "published" ? "Published" : "Draft"} · {post.category}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="rounded-2xl border border-border bg-card">
+            <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
+              <h2 className="text-sm font-semibold text-foreground">Recent tours</h2>
+              <Link
+                href="/dashboard/tours"
+                className="text-xs font-semibold text-amber-600 hover:underline dark:text-amber-400"
+              >
+                Manage
+              </Link>
+            </div>
+            {recentTours.length === 0 ? (
+              <p className="px-5 py-8 text-center text-xs text-muted-foreground">No tours yet.</p>
+            ) : (
+              <ul className="divide-y divide-border">
+                {recentTours.map((tour) => (
+                  <li key={tour.id}>
+                    <Link
+                      href={`/dashboard/tours/${tour.id}`}
+                      className="flex items-start gap-3 px-5 py-3.5 transition-colors hover:bg-surface"
+                    >
+                      <Images size={15} className="mt-0.5 shrink-0 text-muted-foreground" />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium text-foreground">{tour.title}</p>
+                        <p className="mt-0.5 text-[11px] text-muted-foreground">
+                          {tour.status === "published" ? "Live" : "Draft"} · {tour.gallery.length} gallery photo
+                          {tour.gallery.length === 1 ? "" : "s"}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
       </div>
+
+      <section className="grid gap-4 sm:grid-cols-2">
+        <Link
+          href="/dashboard/tours/new"
+          className="group flex items-center gap-4 rounded-2xl border border-dashed border-border bg-card px-5 py-5 transition-colors hover:border-amber-400"
+        >
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+            <Images size={19} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-foreground">Upload group tour photos</p>
+            <p className="text-xs text-muted-foreground">Create a page with a cover photo and gallery.</p>
+          </div>
+          <ArrowUpRight size={16} className="text-muted-foreground" />
+        </Link>
+
+        <Link
+          href="/group-tours"
+          target="_blank"
+          className="group flex items-center gap-4 rounded-2xl border border-dashed border-border bg-card px-5 py-5 transition-colors hover:border-amber-400"
+        >
+          <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-surface text-muted-foreground">
+            <ExternalLink size={19} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-foreground">See the public gallery</p>
+            <p className="text-xs text-muted-foreground">What visitors see on auzbizgroup.com.</p>
+          </div>
+          <ArrowUpRight size={16} className="text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </Link>
+      </section>
     </div>
   );
 }

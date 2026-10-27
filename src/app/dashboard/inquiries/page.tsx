@@ -1,196 +1,227 @@
-"use client";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  Mail,
+  MessageCircle,
+  MessageSquare,
+  Phone,
+  Send,
+} from "lucide-react";
+import { requireAdminPage } from "@/lib/auth";
+import { getContent } from "@/lib/content/store";
+import { updateInquiryStatusAction } from "@/app/dashboard/actions";
+import type { Inquiry, InquiryStatus } from "@/lib/content/types";
 
-import { useMemo, useState } from "react";
-import { Search, Filter, MessageCircle, Mail, Globe } from "lucide-react";
+export const dynamic = "force-dynamic";
 
-type Inquiry = {
-  id: string;
-  name: string;
-  contact: string;
-  service: string;
-  channel: "WhatsApp" | "Website" | "Email";
-  status: "New" | "In progress" | "Quoted" | "Closed";
-  created: string;
-  note: string;
-};
-
-const seed: Inquiry[] = [
-  {
-    id: "INQ-1042",
-    name: "Ahmed Raza",
-    contact: "+92 300 1112233",
-    service: "Umrah · Family of 4",
-    channel: "WhatsApp",
-    status: "New",
-    created: "Today, 11:42",
-    note: "Prefers Ramadan dates",
-  },
-  {
-    id: "INQ-1041",
-    name: "Sara Khan",
-    contact: "sara.k@email.com",
-    service: "Schengen visa · Couple",
-    channel: "Website",
-    status: "In progress",
-    created: "Today, 10:15",
-    note: "Spain + France itinerary",
-  },
-  {
-    id: "INQ-1040",
-    name: "Fast Agro HR",
-    contact: "hr@fastagro.pk",
-    service: "Corporate MICE · Thailand",
-    channel: "Email",
-    status: "Quoted",
-    created: "Yesterday",
-    note: "80 pax incentive tour",
-  },
-  {
-    id: "INQ-1039",
-    name: "Bilal Hussain",
-    contact: "+92 321 9988776",
-    service: "Uzbekistan tour · 8 pax",
-    channel: "WhatsApp",
-    status: "New",
-    created: "Yesterday",
-    note: "Halal meals required",
-  },
-  {
-    id: "INQ-1038",
-    name: "Nadia Iqbal",
-    contact: "nadia@email.com",
-    service: "UAE visit visa",
-    channel: "Website",
-    status: "Closed",
-    created: "2 days ago",
-    note: "Approved",
-  },
+const statuses: { key: "all" | InquiryStatus; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "new", label: "New" },
+  { key: "contacted", label: "Contacted" },
+  { key: "quoted", label: "Quoted" },
+  { key: "closed", label: "Closed" },
 ];
 
-const channelIcon = {
-  WhatsApp: MessageCircle,
-  Website: Globe,
-  Email: Mail,
+const statusTone: Record<InquiryStatus, string> = {
+  new: "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300",
+  contacted: "bg-sky-50 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300",
+  quoted: "bg-violet-50 text-violet-700 dark:bg-violet-500/10 dark:text-violet-300",
+  closed: "bg-slate-100 text-slate-600 dark:bg-white/5 dark:text-slate-400",
 };
 
-export default function InquiriesPage() {
-  const [q, setQ] = useState("");
-  const [status, setStatus] = useState<string>("all");
+function formatDate(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
-  const rows = useMemo(() => {
-    return seed.filter((r) => {
-      const matchQ =
-        !q ||
-        r.name.toLowerCase().includes(q.toLowerCase()) ||
-        r.service.toLowerCase().includes(q.toLowerCase()) ||
-        r.id.toLowerCase().includes(q.toLowerCase());
-      const matchS = status === "all" || r.status === status;
-      return matchQ && matchS;
-    });
-  }, [q, status]);
+function whatsappHref(phone: string): string {
+  const digits = phone.replace(/[^\d]/g, "");
+  return `https://wa.me/${digits}`;
+}
+
+export default async function DashboardInquiriesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
+  await requireAdminPage();
+  const params = await searchParams;
+  const active = statuses.find((status) => status.key === params.status)?.key ?? "all";
+
+  let inquiries: Inquiry[] = [];
+  let error = "";
+  try {
+    inquiries = (await getContent()).inquiries;
+  } catch (readError) {
+    error = readError instanceof Error ? readError.message : "Could not load enquiries.";
+    inquiries = [];
+  }
+
+  const filtered = active === "all" ? inquiries : inquiries.filter((inquiry) => inquiry.status === active);
+  const counts = {
+    all: inquiries.length,
+    new: inquiries.filter((inquiry) => inquiry.status === "new").length,
+    contacted: inquiries.filter((inquiry) => inquiry.status === "contacted").length,
+    quoted: inquiries.filter((inquiry) => inquiry.status === "quoted").length,
+    closed: inquiries.filter((inquiry) => inquiry.status === "closed").length,
+  };
 
   return (
-    <div className="space-y-6 max-w-6xl">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-            Inquiries
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Leads from WhatsApp, website form and email.
+    <div className="space-y-7">
+      <header>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-400">
+          Inquiries
+        </p>
+        <h1 className="mt-1.5 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+          Website enquiries
+        </h1>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          Messages from the contact page and quote builder. New enquiries are also emailed to
+          the office inbox.
+        </p>
+      </header>
+
+      {error && (
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+          {error}
+        </div>
+      )}
+
+      <div className="flex flex-wrap gap-1.5">
+        {statuses.map((status) => (
+          <Link
+            key={status.key}
+            href={`/dashboard/inquiries${status.key === "all" ? "" : `?status=${status.key}`}`}
+            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+              active === status.key
+                ? "bg-slate-950 text-white dark:bg-amber-500 dark:text-slate-950"
+                : "border border-border bg-card text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {status.label} {counts[status.key]}
+          </Link>
+        ))}
+      </div>
+
+      {filtered.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-surface text-muted-foreground">
+            <MessageSquare size={22} />
+          </span>
+          <h2 className="mt-4 text-base font-semibold text-foreground">
+            {inquiries.length === 0 ? "No enquiries yet" : "Nothing in this status"}
+          </h2>
+          <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
+            {inquiries.length === 0
+              ? "When someone submits the contact form or quote builder, their message will appear here."
+              : "Choose another status to see more messages."}
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <div className="relative">
-            <Search
-              size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="Search name, service, ID…"
-              className="pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-[#12122a] w-56 focus:outline-none focus:ring-2 focus:ring-gold-500/40"
-            />
-          </div>
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-white/10 bg-white dark:bg-[#12122a] focus:outline-none focus:ring-2 focus:ring-gold-500/40"
-          >
-            <option value="all">All statuses</option>
-            <option value="New">New</option>
-            <option value="In progress">In progress</option>
-            <option value="Quoted">Quoted</option>
-            <option value="Closed">Closed</option>
-          </select>
-        </div>
-      </div>
+      ) : (
+        <div className="space-y-4">
+          {filtered.map((inquiry) => (
+            <article key={inquiry.id} className="rounded-2xl border border-border bg-card p-5">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start">
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${statusTone[inquiry.status]}`}>
+                      {inquiry.status}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground">{formatDate(inquiry.createdAt)}</span>
+                  </div>
 
-      <div className="rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#12122a] overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-100 dark:border-white/10 text-left text-xs uppercase tracking-wider text-gray-500">
-                <th className="px-4 py-3 font-medium">ID</th>
-                <th className="px-4 py-3 font-medium">Client</th>
-                <th className="px-4 py-3 font-medium">Service</th>
-                <th className="px-4 py-3 font-medium">Channel</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">Created</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50 dark:divide-white/5">
-              {rows.map((r) => {
-                const Icon = channelIcon[r.channel];
-                return (
-                  <tr
-                    key={r.id}
-                    className="hover:bg-gray-50/80 dark:hover:bg-white/[0.03]"
-                  >
-                    <td className="px-4 py-3 font-mono text-xs text-gray-500">{r.id}</td>
-                    <td className="px-4 py-3">
-                      <p className="font-medium text-gray-900 dark:text-white">{r.name}</p>
-                      <p className="text-xs text-gray-400">{r.contact}</p>
-                    </td>
-                    <td className="px-4 py-3 text-gray-700 dark:text-gray-300">{r.service}</td>
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-300">
-                        <Icon size={14} /> {r.channel}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full ${
-                          r.status === "New"
-                            ? "bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300"
-                            : r.status === "In progress"
-                              ? "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300"
-                              : r.status === "Quoted"
-                                ? "bg-violet-50 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300"
-                                : "bg-gray-100 text-gray-600 dark:bg-white/10 dark:text-gray-300"
-                        }`}
-                      >
-                        {r.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-xs text-gray-500">{r.created}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        {rows.length === 0 && (
-          <div className="px-4 py-12 text-center text-sm text-gray-400">
-            No inquiries match your filters.
-          </div>
-        )}
-      </div>
+                  <h2 className="mt-2 text-base font-semibold text-foreground">{inquiry.name}</h2>
+                  <p className="text-sm text-muted-foreground">
+                    {inquiry.service || "General enquiry"}
+                    {inquiry.destination ? ` · ${inquiry.destination}` : ""}
+                  </p>
 
-      <p className="text-xs text-gray-400">
-        Demo data — connect your CRM or form webhooks to make this live.
-      </p>
+                  <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs">
+                    {inquiry.phone && (
+                      <a href={`tel:${inquiry.phone}`} className="inline-flex items-center gap-1.5 text-foreground hover:text-amber-600 dark:hover:text-amber-400">
+                        <Phone size={12} /> {inquiry.phone}
+                      </a>
+                    )}
+                    {inquiry.email && (
+                      <a href={`mailto:${inquiry.email}`} className="inline-flex items-center gap-1.5 text-foreground hover:text-amber-600 dark:hover:text-amber-400">
+                        <Mail size={12} /> {inquiry.email}
+                      </a>
+                    )}
+                    {inquiry.travelDates && (
+                      <span className="text-muted-foreground">Travel: {inquiry.travelDates}</span>
+                    )}
+                    {inquiry.groupSize && (
+                      <span className="text-muted-foreground">Group: {inquiry.groupSize}</span>
+                    )}
+                  </div>
+
+                  {inquiry.message && (
+                    <p className="mt-3 whitespace-pre-line rounded-xl bg-surface px-4 py-3 text-sm leading-relaxed text-muted-foreground">
+                      {inquiry.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 lg:w-52 lg:flex-col lg:items-stretch">
+                  {inquiry.phone && (
+                    <a
+                      href={whatsappHref(inquiry.phone)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-emerald-500"
+                    >
+                      <MessageCircle size={13} /> WhatsApp
+                    </a>
+                  )}
+                  {inquiry.email && (
+                    <a
+                      href={`mailto:${inquiry.email}?subject=${encodeURIComponent("Your AUZBIZ travel enquiry")}`}
+                      className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:border-amber-400"
+                    >
+                      <Send size={13} /> Reply by email
+                    </a>
+                  )}
+
+                  <form action={updateInquiryStatusAction} className="flex items-center gap-1.5">
+                    <input type="hidden" name="id" value={inquiry.id} />
+                    <select
+                      name="status"
+                      defaultValue={inquiry.status}
+                      aria-label={`Status for ${inquiry.name}`}
+                      className="h-8 flex-1 rounded-lg border border-input bg-card px-2 text-xs text-foreground"
+                    >
+                      <option value="new">New</option>
+                      <option value="contacted">Contacted</option>
+                      <option value="quoted">Quoted</option>
+                      <option value="closed">Closed</option>
+                    </select>
+                    <button
+                      type="submit"
+                      className="h-8 rounded-lg bg-slate-950 px-2.5 text-[11px] font-semibold text-white dark:bg-amber-500 dark:text-slate-950"
+                    >
+                      Save
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+
+      <Link
+        href="/dashboard"
+        className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeft size={15} /> Overview
+      </Link>
     </div>
   );
 }

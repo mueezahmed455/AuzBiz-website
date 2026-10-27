@@ -31,27 +31,33 @@ export default function ThemeProvider({
 }: {
   children: React.ReactNode;
 }) {
-  // Initialize from the <html> class set by the inline script in layout.tsx
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof document !== "undefined" && document.documentElement.classList.contains("dark")) {
-      return "dark";
-    }
-    return "light";
-  });
+  // Start light so server and client markup match. The <html> class is already
+  // correct before paint thanks to the inline script in layout.tsx; sync the
+  // React state to it after hydration.
+  const [theme, setTheme] = useState<Theme>("light");
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("auzbiz-theme") as Theme | null;
-    if (stored) {
-      setTheme(stored);
-    }
+    const stored = localStorage.getItem("auzbiz-theme");
+    const initial: Theme =
+      stored === "dark" || stored === "light"
+        ? stored
+        : document.documentElement.classList.contains("dark")
+          ? "dark"
+          : "light";
+    window.setTimeout(() => {
+      setTheme(initial);
+      setHydrated(true);
+    }, 0);
   }, []);
 
   useEffect(() => {
+    if (!hydrated) return;
     const root = document.documentElement;
     root.classList.remove("light", "dark");
     root.classList.add(theme);
     localStorage.setItem("auzbiz-theme", theme);
-  }, [theme]);
+  }, [theme, hydrated]);
 
   const toggleTheme = useCallback(() => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
