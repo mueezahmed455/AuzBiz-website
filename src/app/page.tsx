@@ -1,12 +1,11 @@
 import Link from "next/link";
 import {
   Plane, Globe, Hotel, IdCard, GraduationCap, Clock,
-  ArrowRight, Shield, Compass, Heart, Search,
+  ArrowRight, Shield, Compass, Heart,
   MessageCircle, BarChart, Phone, Mail, MapPin, Moon, ClipboardCheck,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { SectionHeader, Card, Badge } from "@/components/ui";
-import HeroRouteArt from "@/components/HeroRouteArt";
 import CTABar from "@/components/CTABar";
 import QuoteBuilder from "@/components/QuoteBuilder";
 import TourCard from "@/components/TourCard";
@@ -14,20 +13,6 @@ import { getContentSafe, sortPosts } from "@/lib/content/store";
 import { BlogSection } from "@/sections/BlogSection";
 
 export const dynamic = "force-dynamic";
-
-const heroFeatures = [
-  { icon: BarChart, label: "Sample fare comparison" },
-  { icon: Plane, label: "Live plane radar" },
-  { icon: IdCard, label: "Visa requirements catalogue" },
-  { icon: Clock, label: "WhatsApp travel desk" },
-];
-
-const operatingFacts = [
-  { value: "8", label: "Services, one team" },
-  { value: "1", label: "Point of contact" },
-  { value: "Mon–Sat", label: "9am – 8pm office hours" },
-  { value: "Lahore", label: "DHA II (Rehbar) office" },
-];
 
 const services = [
   {
@@ -106,64 +91,64 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="hero-section relative overflow-hidden bg-slate-950 text-white">
-        <div aria-hidden="true" className="hero-grid pointer-events-none absolute inset-0 opacity-60" />
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-10 pb-16 pt-16 sm:pb-24 sm:pt-24 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] lg:gap-8">
+      <section className="hero-section bg-slate-950 text-white">
+        <div className="mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 sm:pb-24 sm:pt-20 lg:px-8">
+          <div className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-24">
             <div>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-3 py-1 text-xs font-semibold text-amber-300 animate-fade-in">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-300" />
-                AUZBIZ travel desk · Lahore
-              </div>
-              <h1 className="mb-6 max-w-3xl text-4xl font-bold leading-[1.02] tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl animate-slide-up" style={{ animationDelay: "0.1s" }}>
-                Travel, arranged<br />
-                <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent">properly.</span>
-              </h1>
-              <p className="mb-9 max-w-xl text-lg leading-relaxed text-slate-300 sm:text-xl animate-slide-up" style={{ animationDelay: "0.2s" }}>
-                Flights, visas, hotels and group journeys handled by one reachable team. Clear options, honest advice, no unnecessary noise.
+              <p className="mb-7 text-xs font-semibold uppercase tracking-[0.24em] text-amber-300">
+                Travel agency · Lahore
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-                <Button href="/ticket-analysis" size="lg" className="w-full border border-amber-300/40 bg-amber-400 text-slate-950 shadow-[0_12px_40px_rgba(245,158,11,0.25)] hover:bg-amber-300 sm:w-auto">
-                  <Search size={18} /> Plan a trip
+              <h1 className="max-w-4xl text-5xl font-semibold leading-[0.98] tracking-[-0.055em] text-white sm:text-7xl lg:text-[6.4rem]">
+                Go further.<br />
+                <span className="text-amber-400">Travel better.</span>
+              </h1>
+              <p className="mt-8 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
+                Flights, visas, hotels, Umrah and group tours arranged by a
+                team that knows the details and stays available.
+              </p>
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <Button href="/contact" size="lg" className="bg-amber-400 text-slate-950 hover:bg-amber-300">
+                  Start an enquiry <ArrowRight size={18} />
                 </Button>
-                <Button href="https://wa.me/923464993122" variant="outline" size="lg" className="w-full border-white/20 bg-white/5 text-white hover:bg-white/10 sm:w-auto">
-                  <MessageCircle size={18} strokeWidth={2} /> Talk to our desk
-                </Button>
+                <a
+                  href="https://wa.me/923464993122"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-2 py-3 text-sm font-semibold text-white transition-colors hover:text-amber-300"
+                >
+                  WhatsApp the desk <MessageCircle size={17} />
+                </a>
               </div>
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-medium text-slate-400 animate-slide-up" style={{ animationDelay: "0.4s" }}>
-                {heroFeatures.map((f) => (
-                  <div key={f.label} className="flex items-center gap-2">
-                    <f.icon size={14} strokeWidth={2} className="text-amber-300" />
-                    <span>{f.label}</span>
-                  </div>
+            </div>
+
+            <div className="border-t border-white/15 lg:border-t-0">
+              <p className="mb-5 pt-5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 lg:pt-0">
+                We arrange
+              </p>
+              <div className="divide-y divide-white/15 border-y border-white/15">
+                {[
+                  ["01", "Air tickets & hotels", "/ticket-analysis"],
+                  ["02", "Visas & Umrah", "/visas"],
+                  ["03", "Group & corporate travel", "/group-tours"],
+                ].map(([number, label, href]) => (
+                  <Link
+                    key={number}
+                    href={href}
+                    className="group flex items-center justify-between py-5 text-base font-medium text-slate-200 transition-colors hover:text-amber-300"
+                  >
+                    <span className="flex items-center gap-5">
+                      <span className="text-xs text-slate-500">{number}</span>
+                      {label}
+                    </span>
+                    <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
+                  </Link>
                 ))}
               </div>
+              <p className="mt-6 text-sm leading-6 text-slate-400">
+                DHA II (Rehbar), Lahore<br />
+                Mon–Sat · 9am–8pm · +92 346 4993122
+              </p>
             </div>
-
-            <div className="relative -mx-2 mt-4 min-h-[360px] sm:min-h-[440px] lg:mt-0">
-              <HeroRouteArt />
-            </div>
-          </div>
-        </div>
-
-        {/* Operating facts */}
-        <div className="border-y border-white/10 bg-white/[0.03]">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <dl className="grid grid-cols-2 gap-6 py-8 sm:grid-cols-4">
-              {operatingFacts.map((fact) => (
-                <div key={fact.label}>
-                  <dt className="sr-only">{fact.label}</dt>
-                  <dd>
-                    <span className="block text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                      {fact.value}
-                    </span>
-                    <span className="mt-1 block text-xs text-slate-400">
-                      {fact.label}
-                    </span>
-                  </dd>
-                </div>
-              ))}
-            </dl>
           </div>
         </div>
       </section>
