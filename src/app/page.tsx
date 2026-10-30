@@ -106,61 +106,58 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-surface dark:bg-slate-950 overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-48 -top-64 h-[44rem] w-[44rem] rounded-full bg-amber-500/[0.08] blur-3xl dark:bg-amber-500/[0.05]"
-        />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid items-center gap-14 pt-16 sm:pt-24 pb-20 sm:pb-28 xl:grid-cols-[minmax(0,1.06fr)_minmax(0,0.94fr)]">
+      <section className="hero-section relative overflow-hidden bg-slate-950 text-white">
+        <div aria-hidden="true" className="hero-grid pointer-events-none absolute inset-0 opacity-60" />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-10 pb-16 pt-16 sm:pb-24 sm:pt-24 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)] lg:gap-8">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-100 text-xs font-semibold text-amber-700 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-400 mb-6 animate-fade-in">
-                <Plane size={14} strokeWidth={2} />
-                Fare comparison &amp; live plane radar
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-3 py-1 text-xs font-semibold text-amber-300 animate-fade-in">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-300" />
+                AUZBIZ travel desk · Lahore
               </div>
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-[4rem] font-bold tracking-tight leading-[1.05] mb-6 max-w-3xl animate-slide-up" style={{ animationDelay: "0.1s" }}>
-                Travel planned with<br />
-                <span className="bg-gradient-to-r from-slate-900 via-amber-600 to-slate-900 bg-clip-text text-transparent dark:from-white dark:via-amber-400 dark:to-white">precision.</span>
+              <h1 className="mb-6 max-w-3xl text-4xl font-bold leading-[1.02] tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl animate-slide-up" style={{ animationDelay: "0.1s" }}>
+                Travel, arranged<br />
+                <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent">properly.</span>
               </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mb-10 leading-relaxed animate-slide-up" style={{ animationDelay: "0.2s" }}>
-                End-to-end travel from Lahore — Umrah, visas, group tours, corporate MICE, and practical flight tools. Clear inclusions, one accountable desk.
+              <p className="mb-9 max-w-xl text-lg leading-relaxed text-slate-300 sm:text-xl animate-slide-up" style={{ animationDelay: "0.2s" }}>
+                Flights, visas, hotels and group journeys handled by one reachable team. Clear options, honest advice, no unnecessary noise.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-                <Button href="/ticket-analysis" size="lg" className="w-full sm:w-auto">
-                  <Search size={18} /> Explore fare analysis
+                <Button href="/ticket-analysis" size="lg" className="w-full border border-amber-300/40 bg-amber-400 text-slate-950 shadow-[0_12px_40px_rgba(245,158,11,0.25)] hover:bg-amber-300 sm:w-auto">
+                  <Search size={18} /> Plan a trip
                 </Button>
-                <Button href="https://wa.me/923464993122" variant="outline" size="lg" className="w-full sm:w-auto">
-                  <MessageCircle size={18} strokeWidth={2} /> Chat on WhatsApp
+                <Button href="https://wa.me/923464993122" variant="outline" size="lg" className="w-full border-white/20 bg-white/5 text-white hover:bg-white/10 sm:w-auto">
+                  <MessageCircle size={18} strokeWidth={2} /> Talk to our desk
                 </Button>
               </div>
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-medium text-muted-foreground animate-slide-up" style={{ animationDelay: "0.4s" }}>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-medium text-slate-400 animate-slide-up" style={{ animationDelay: "0.4s" }}>
                 {heroFeatures.map((f) => (
                   <div key={f.label} className="flex items-center gap-2">
-                    <f.icon size={14} strokeWidth={2} className="text-slate-600 dark:text-slate-400" />
+                    <f.icon size={14} strokeWidth={2} className="text-amber-300" />
                     <span>{f.label}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="hidden xl:block">
+            <div className="relative -mx-2 mt-4 min-h-[360px] sm:min-h-[440px] lg:mt-0">
               <HeroRouteArt />
             </div>
           </div>
         </div>
 
         {/* Operating facts */}
-        <div className="border-y border-border bg-surface/50 dark:border-white/5 dark:bg-slate-950/50">
+        <div className="border-y border-white/10 bg-white/[0.03]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <dl className="grid grid-cols-2 gap-6 py-8 sm:grid-cols-4">
               {operatingFacts.map((fact) => (
                 <div key={fact.label}>
                   <dt className="sr-only">{fact.label}</dt>
                   <dd>
-                    <span className="block text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+                    <span className="block text-2xl font-bold tracking-tight text-white sm:text-3xl">
                       {fact.value}
                     </span>
-                    <span className="mt-1 block text-xs text-muted-foreground">
+                    <span className="mt-1 block text-xs text-slate-400">
                       {fact.label}
                     </span>
                   </dd>
