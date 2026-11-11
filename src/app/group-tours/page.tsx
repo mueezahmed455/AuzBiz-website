@@ -5,6 +5,7 @@ import { getPublishedTours } from "@/lib/content/store";
 import type { TourRegion } from "@/lib/content/types";
 import TourCard from "@/components/TourCard";
 import Gallery from "@/components/Gallery";
+import AUZPromoBanner from "@/components/promo/AUZPromoBanner";
 
 export const dynamic = "force-dynamic";
 
@@ -89,6 +90,17 @@ export default async function GroupToursPage({
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Group tours promo — AUZBIZ 2×2 identity, wired into the revenue surface */}
+      <section className="bg-background dark:bg-slate-950 py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AUZPromoBanner
+            variant="group"
+            href="/group-tours"
+            className="max-w-3xl"
+          />
         </div>
       </section>
 

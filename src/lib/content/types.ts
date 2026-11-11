@@ -43,6 +43,8 @@ export interface Tour {
   highlights: string[];
   coverImage?: string;
   coverAlt?: string;
+  promoImage?: string;
+  promoAlt?: string;
   gallery: string[];
   status: TourStatus;
   featured: boolean;

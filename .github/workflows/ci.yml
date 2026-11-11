@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# Cancel superseded runs on the same branch so pushes finish faster.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # npm ci installs exactly what package-lock.json pins.
+      - run: npm ci --no-audit --no-fund
+
+      - run: npx tsc --noEmit
+
+      - run: npm run lint
+
+      # Public content data (tour slugs, visa catalogue) breaks silently when
+      # hand-edited; these tests catch it before deploy.
+      - run: npx jest
+
+      - run: npm run build
+
+      # The build output directory is sized so a sudden bundle regression is
+      # visible in the action log.
+      - run: du -sh .next

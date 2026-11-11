@@ -245,6 +245,8 @@ export async function saveTourAction(
   const highlights = parseLines(text(formData, "highlights"));
   const coverImage = text(formData, "coverImage");
   const coverAlt = text(formData, "coverAlt");
+  const promoImage = text(formData, "promoImage");
+  const promoAlt = text(formData, "promoAlt");
   const gallery = parseGallery(text(formData, "gallery"));
   const status = text(formData, "status") === "published" ? "published" : "draft";
   const featured = bool(formData, "featured");
@@ -281,6 +283,8 @@ export async function saveTourAction(
       highlights,
       coverImage: coverImage || undefined,
       coverAlt: coverImage ? coverAlt || title : undefined,
+      promoImage: promoImage || undefined,
+      promoAlt: promoImage ? promoAlt || title : undefined,
       gallery,
       status,
       featured,

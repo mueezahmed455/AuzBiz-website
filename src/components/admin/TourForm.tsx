@@ -154,6 +154,26 @@ export default function TourForm({ tour }: { tour?: Tour }) {
                 placeholder="Describe the photo for screen readers"
               />
             </div>
+
+            <div className="border-t border-border pt-5">
+              <ImageUploader
+                name="promoImage"
+                label="Promo hero photo"
+                hint="4K photo for homepage & services promo slot; falls back to the designed art"
+                initialValue={tour?.promoImage}
+              />
+              <div>
+                <Label htmlFor="promoAlt">Promo photo description</Label>
+                <Input
+                  id="promoAlt"
+                  name="promoAlt"
+                  maxLength={160}
+                  defaultValue={tour?.promoAlt}
+                  placeholder="Describe the photo for screen readers"
+                />
+              </div>
+            </div>
+
             <div className="border-t border-border pt-5">
               <ImageUploader
                 name="gallery"

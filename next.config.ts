@@ -40,9 +40,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: [
       "framer-motion",
-      "@react-three/fiber",
-      "@react-three/drei",
-      "three",
     ],
     // Enable CSS optimization
     optimizeCss: false, // Set to true if using @next/bundle-analyzer or critters

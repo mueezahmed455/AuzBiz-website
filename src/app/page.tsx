@@ -11,6 +11,7 @@ import QuoteBuilder from "@/components/QuoteBuilder";
 import TourCard from "@/components/TourCard";
 import { getContentSafe, sortPosts } from "@/lib/content/store";
 import { BlogSection } from "@/sections/BlogSection";
+import { AUZPromoGrid } from "@/components/promo/AUZPromoBanner";
 
 export const dynamic = "force-dynamic";
 
@@ -86,7 +87,18 @@ export default async function HomePage() {
   const tours = content.tours
     .filter((tour) => tour.status === "published")
     .sort((a, b) => Number(b.featured) - Number(a.featured))
-    .slice(0, 3);
+    .slice(0, 6);
+
+  const featuredUmrahTour = tours.find((tour) => tour.region === "Umrah" && tour.promoImage);
+  const featuredPromoTour = tours.find((tour) => tour.promoImage);
+  const heroImages: { umrah?: { url?: string; alt?: string }; group?: { url?: string; alt?: string } } = {
+    umrah: featuredUmrahTour
+      ? { url: featuredUmrahTour.promoImage!, alt: featuredUmrahTour.promoAlt ?? undefined }
+      : undefined,
+    group: featuredPromoTour
+      ? { url: featuredPromoTour.promoImage!, alt: featuredPromoTour.promoAlt ?? undefined }
+      : undefined,
+  };
 
   return (
     <>
@@ -150,6 +162,13 @@ export default async function HomePage() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* AUZBIZ promo grid — 2×2 service identity (Umrah / Education / Group / Visa) */}
+      <section className="bg-background dark:bg-slate-950 py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AUZPromoGrid heroImages={heroImages} />
         </div>
       </section>
 

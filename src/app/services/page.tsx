@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import CTABar from "@/components/CTABar";
 import { SectionHeader } from "@/components/ui";
+import { AUZPromoGrid } from "@/components/promo/AUZPromoBanner";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -231,6 +232,13 @@ export default function ServicesPage() {
               See current departures
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* AUZBIZ promo grid — 2×2 service identity (Umrah / Education / Group / Visa) */}
+      <section className="bg-background dark:bg-slate-950 py-12 sm:py-16 border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AUZPromoGrid />
         </div>
       </section>
 

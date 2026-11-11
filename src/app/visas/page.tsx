@@ -10,6 +10,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { visas } from "@/data/visas";
+import AUZPromoBanner from "@/components/promo/AUZPromoBanner";
 
 export const metadata: Metadata = {
   title: "Visa services",
@@ -67,6 +68,17 @@ export default function VisasPage() {
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Visa promo — AUZBIZ 2×2 identity, wired into the revenue surface */}
+      <section className="bg-background dark:bg-slate-950 py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AUZPromoBanner
+            variant="visa"
+            href="/contact?service=Visa%20Services"
+            className="max-w-3xl"
+          />
         </div>
       </section>
 
